@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { CoverPage } from './components/CoverPage';
 import { PhotoGallery } from './components/PhotoGallery';
-import { playFlipSound } from './components/AudioEffects';
+import { playFlipSound, startBackgroundMusic, isMusicPlaying } from './components/AudioEffects';
 import { ITINERARY, INITIAL_REGISTRY } from './data';
 import { DayPlan, RSVPResponse, AttendanceStatus, MealOption } from './types';
 import { GoldCorner, GoldDivider, GoldGradientDef } from './components/GoldOrnaments';
@@ -79,13 +79,34 @@ export default function App() {
   const [blessing, setBlessing] = useState('');
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
-
   const totalPages = 6;
 
   // Save registry changes to localStorage
   useEffect(() => {
     localStorage.setItem('vikram_sewta_rsvp', JSON.stringify(registry));
   }, [registry]);
+
+  // First interaction auto-player to bypass browser autoplay blocks safely and play background music continuously
+  useEffect(() => {
+    const handleFirstTouch = () => {
+      if (!isMusicPlaying()) {
+        startBackgroundMusic();
+      }
+      cleanup();
+    };
+
+    const cleanup = () => {
+      window.removeEventListener('click', handleFirstTouch);
+      window.removeEventListener('touchstart', handleFirstTouch);
+      window.removeEventListener('keydown', handleFirstTouch);
+    };
+
+    window.addEventListener('click', handleFirstTouch);
+    window.addEventListener('touchstart', handleFirstTouch);
+    window.addEventListener('keydown', handleFirstTouch);
+
+    return cleanup;
+  }, []);
 
   const handleNext = () => {
     if (currentPage < totalPages - 1) {

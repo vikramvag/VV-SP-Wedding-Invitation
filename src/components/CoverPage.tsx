@@ -26,8 +26,8 @@ export const CoverPage: React.FC<CoverPageProps> = ({ onNext }) => {
   // Simple gold text without gradient and simple drop shadow
   const goldSolidStyle: React.CSSProperties = {
     color: '#d4af37',
-    textShadow: '1px 1px 2.5px rgba(0, 0, 0, 0.28)',
-    fontFamily: "'Playfair Display', serif",
+    textShadow: '2px 2px 4px rgba(0, 0, 0, 0.24)',
+    fontFamily: "'Alex Brush', 'Great Vibes', 'Pinyon Script', cursive",
   };
 
   return (
@@ -106,7 +106,7 @@ export const CoverPage: React.FC<CoverPageProps> = ({ onNext }) => {
         >
           {/* Deep gold-embossed couple names */}
           <h1 
-            className="font-cursive text-5xl xs:text-6xl sm:text-7xl px-4 leading-[1.3] text-center select-none pointer-events-none tracking-wide"
+            className="font-cursive text-6xl xs:text-7xl sm:text-8xl px-4 leading-[1.3] text-center select-none pointer-events-none tracking-wide"
             style={goldSolidStyle}
           >
             Sweta &amp; Vikram

@@ -1,75 +1,91 @@
 /**
- * Audio synthesis for realistic premium paper flipping sounds.
- * Uses native Web Audio API to create a gentle "shhhk" texture dynamically.
+ * Audio Effects utility playing user-provided MP3 files natively.
+ * Plays the background music continuously in a loop.
+ * 
+ * Complies with the browser autoplay permissions.
+ * All other interaction/page flip sounds are disabled.
  */
 
-let audioCtx: AudioContext | null = null;
-
-function getAudioContext() {
-  if (!audioCtx) {
-    audioCtx = new (window.AudioContext || (window as any).webkitAudioContext)();
-  }
-  if (audioCtx.state === 'suspended') {
-    audioCtx.resume();
-  }
-  return audioCtx;
-}
+let audioPlayer: HTMLAudioElement | null = null;
+let isPlaying = false;
 
 export function playFlipSound() {
-  try {
-    const ctx = getAudioContext();
-    if (!ctx) return;
+  // Disabled as per user request to disable all other/interaction sounds
+}
 
-    const duration = 0.45; // seconds
-    const bufferSize = ctx.sampleRate * duration;
-    const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
-    const data = buffer.getChannelData(0);
+/**
+ * Primary trigger to launch background MP3 music
+ */
+export function startBackgroundMusic() {
+  if (isPlaying) return;
+  isPlaying = true;
 
-    // Create a white noise burst with subtle crackles for paper texture
-    for (let i = 0; i < bufferSize; i++) {
-      const t = i / bufferSize;
-      const noise = Math.random() * 2 - 1;
-      
-      // Add very subtle micro-crackles
-      const crackle = Math.random() > 0.985 ? (Math.random() * 0.4) : 0;
-      
-      // Combine noise and decay
-      data[i] = (noise * 0.45 + crackle * 0.55) * Math.pow(1 - t, 2.5);
-    }
-
-    const noiseNode = ctx.createBufferSource();
-    noiseNode.buffer = buffer;
-
-    // Bandpass filter to restrict the sound to paper-like rustle frequencies (about 300Hz to 6000Hz)
-    const bandpass = ctx.createBiquadFilter();
-    bandpass.type = 'bandpass';
-    bandpass.frequency.setValueAtTime(2200, ctx.currentTime);
-    // Sweeping the frequency down slightly mimics the slowing movement of the turn
-    bandpass.frequency.exponentialRampToValueAtTime(1400, ctx.currentTime + duration);
-    bandpass.Q.setValueAtTime(1.0, ctx.currentTime);
-
-    // Lowpass filter for warming up the tone
-    const lowpass = ctx.createBiquadFilter();
-    lowpass.type = 'lowpass';
-    lowpass.frequency.setValueAtTime(3200, ctx.currentTime);
-    lowpass.frequency.exponentialRampToValueAtTime(1800, ctx.currentTime + duration);
-
-    // Volume level node
-    const gainNode = ctx.createGain();
-    gainNode.gain.setValueAtTime(0.001, ctx.currentTime);
-    gainNode.gain.linearRampToValueAtTime(0.35, ctx.currentTime + 0.05); // quick attack
-    gainNode.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration); // smooth decay
-
-    // Connect nodes
-    noiseNode.connect(bandpass);
-    bandpass.connect(lowpass);
-    lowpass.connect(gainNode);
-    gainNode.connect(ctx.destination);
-
-    // Play
-    noiseNode.start();
-  } catch (error) {
-    // Fail silently if browser blocks audio autoplay
-    console.debug('Audio autoplay blocked or unsupported:', error);
+  if (!audioPlayer) {
+    // Primary path is /background.mp3
+    audioPlayer = new Audio('/background.mp3');
+    audioPlayer.loop = true;
+    audioPlayer.volume = 0.65;
   }
+
+  audioPlayer.play().then(() => {
+    console.log("Traditional background music started successfully!");
+  }).catch((err) => {
+    console.debug("Failed opening primary /background.mp3, trying alternative paths...", err);
+    
+    // Attempt fallback relative paths
+    const alternativePaths = [
+      '/music.mp3',
+      '/wedding_song.mp3',
+      'background.mp3',
+      'music.mp3',
+      'wedding_song.mp3',
+      './background.mp3',
+      './music.mp3',
+      './wedding_song.mp3'
+    ];
+
+    let currentIndex = 0;
+    const tryNextPath = () => {
+      if (!isPlaying) return;
+      if (currentIndex >= alternativePaths.length) {
+        console.warn("Please upload an MP3 file named 'background.mp3' to the root directory to play background music.");
+        return;
+      }
+      
+      const path = alternativePaths[currentIndex++];
+      audioPlayer = new Audio(path);
+      audioPlayer.loop = true;
+      audioPlayer.volume = 0.65;
+      
+      audioPlayer.play().then(() => {
+        console.log(`Successfully playing background music from path: ${path}`);
+      }).catch((e) => {
+        console.debug(`Path ${path} failed to play:`, e);
+        tryNextPath();
+      });
+    };
+
+    tryNextPath();
+  });
+}
+
+/**
+ * Pause background music
+ */
+export function stopBackgroundMusic() {
+  isPlaying = false;
+  if (audioPlayer) {
+    try {
+      audioPlayer.pause();
+    } catch (e) {
+      console.debug("Error pausing player:", e);
+    }
+  }
+}
+
+/**
+ * Query check for playing playback state
+ */
+export function isMusicPlaying(): boolean {
+  return isPlaying && audioPlayer ? !audioPlayer.paused : false;
 }
