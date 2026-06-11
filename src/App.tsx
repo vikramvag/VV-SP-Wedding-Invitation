@@ -21,6 +21,41 @@ import {
   Plus
 } from 'lucide-react';
 
+const pageVariants = {
+  initial: (direction: 'forward' | 'backward') => {
+    const isForward = direction === 'forward';
+    return {
+      rotateY: isForward ? 0 : -135,
+      opacity: 0,
+      scale: isForward ? 0.96 : 1,
+      zIndex: isForward ? 10 : 30,
+    };
+  },
+  animate: {
+    rotateY: 0,
+    opacity: 1,
+    scale: 1,
+    zIndex: 20,
+    transition: {
+      duration: 0.75,
+      ease: [0.2, 0.85, 0.4, 1],
+    }
+  },
+  exit: (direction: 'forward' | 'backward') => {
+    const isForward = direction === 'forward';
+    return {
+      rotateY: isForward ? -135 : 0,
+      opacity: 0,
+      scale: isForward ? 1 : 0.96,
+      zIndex: isForward ? 30 : 10,
+      transition: {
+        duration: 0.75,
+        ease: [0.2, 0.85, 0.4, 1],
+      }
+    };
+  }
+};
+
 export default function App() {
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [registry, setRegistry] = useState<RSVPResponse[]>(() => {
@@ -166,43 +201,67 @@ export default function App() {
         </div>
 
         {/* Inner book stack board frame */}
-        <div className="relative w-full h-full bg-[#fdfbf7] rounded-r-lg border border-[#c9c4b9] shadow-[0_15px_35px_rgba(0,0,0,0.18)] overflow-hidden flex flex-col">
+        <div className="relative w-full h-full bg-[#fdfbf7] rounded-r-lg border border-[#c9c4b9] shadow-[0_15px_35px_rgba(0,0,0,0.18)] flex flex-col" style={{ transformStyle: 'preserve-3d' }}>
           
           {/* Animated Page Flip Containment */}
-          <div className="relative w-full h-full flex-1">
-            <AnimatePresence initial={false} mode="wait">
+          <div className="relative w-full h-full flex-1" style={{ perspective: '1800px', transformStyle: 'preserve-3d' }}>
+            <AnimatePresence initial={false} custom={direction}>
               {currentPage === 0 && (
                 <motion.div
                   key="page-0"
-                  initial={{ rotateY: direction === 'forward' ? 0 : -90, opacity: direction === 'forward' ? 1 : 0 }}
-                  animate={{ rotateY: 0, opacity: 1 }}
-                  exit={{ rotateY: direction === 'forward' ? -90 : 0, opacity: 0 }}
-                  transition={{ duration: 0.65, ease: [0.25, 1, 0.5, 1] }}
-                  style={{ transformOrigin: 'left center', backfaceVisibility: 'hidden' }}
-                  className="absolute inset-0 w-full h-full z-20"
-                  drag="x"
-                  dragConstraints={{ left: 0, right: 0 }}
-                  dragElastic={0.4}
-                  onDragEnd={handleDragEnd}
+                  custom={direction}
+                  variants={pageVariants}
+                  initial="initial"
+                  animate="animate"
+                  exit="exit"
+                  style={{ 
+                    transformOrigin: 'left center', 
+                    backfaceVisibility: 'hidden', 
+                    transformStyle: 'preserve-3d',
+                    position: 'absolute',
+                    inset: 0,
+                  }}
+                  className="absolute inset-0 w-full h-full"
+                  onPanEnd={handleDragEnd}
                 >
                   <CoverPage onNext={handleNext} />
+                  {/* Real-time page shadow during flip */}
+                  <motion.div 
+                    initial={{ opacity: 0.15 }}
+                    animate={{ opacity: 0 }}
+                    exit={{ opacity: 0.35 }}
+                    transition={{ duration: 0.75, ease: 'easeInOut' }}
+                    className="absolute inset-0 bg-gradient-to-r from-black/25 via-black/5 to-transparent pointer-events-none z-30"
+                  />
                 </motion.div>
               )}
 
               {currentPage === 1 && (
                 <motion.div
                   key="page-1"
-                  initial={{ rotateY: direction === 'forward' ? 90 : -90, opacity: 0 }}
-                  animate={{ rotateY: 0, opacity: 1 }}
-                  exit={{ rotateY: direction === 'forward' ? -90 : 90, opacity: 0 }}
-                  transition={{ duration: 0.65, ease: [0.25, 1, 0.5, 1] }}
-                  style={{ transformOrigin: 'left center' }}
-                  className="absolute inset-0 w-full h-full z-20 bg-[#faf9f6] text-[#4a443a] p-5 xs:p-7 sm:p-8 flex flex-col justify-between paper-texture paper-fiber rounded-r-lg"
-                  drag="x"
-                  dragConstraints={{ left: 0, right: 0 }}
-                  dragElastic={0.4}
-                  onDragEnd={handleDragEnd}
+                  custom={direction}
+                  variants={pageVariants}
+                  initial="initial"
+                  animate="animate"
+                  exit="exit"
+                  style={{ 
+                    transformOrigin: 'left center', 
+                    backfaceVisibility: 'hidden', 
+                    transformStyle: 'preserve-3d',
+                    position: 'absolute',
+                    inset: 0,
+                  }}
+                  className="absolute inset-0 w-full h-full bg-[#faf9f6] text-[#4a443a] p-5 xs:p-7 sm:p-8 flex flex-col justify-between paper-texture paper-fiber rounded-r-lg"
+                  onPanEnd={handleDragEnd}
                 >
+                  {/* Real-time page shadow during flip */}
+                  <motion.div 
+                    initial={{ opacity: 0.15 }}
+                    animate={{ opacity: 0 }}
+                    exit={{ opacity: 0.35 }}
+                    transition={{ duration: 0.75, ease: 'easeInOut' }}
+                    className="absolute inset-0 bg-gradient-to-r from-black/25 via-black/5 to-transparent pointer-events-none z-30"
+                  />
                   {/* Page Spine highlight */}
                   <div className="absolute left-0 top-0 bottom-0 w-4 left-spine-gradient pointer-events-none" />
                   <div className="absolute right-0 top-0 bottom-0 w-4 right-spine-gradient pointer-events-none" />
@@ -261,17 +320,29 @@ export default function App() {
               {currentPage === 2 && (
                 <motion.div
                   key="page-2"
-                  initial={{ rotateY: direction === 'forward' ? 90 : -90, opacity: 0 }}
-                  animate={{ rotateY: 0, opacity: 1 }}
-                  exit={{ rotateY: direction === 'forward' ? -90 : 90, opacity: 0 }}
-                  transition={{ duration: 0.65, ease: [0.25, 1, 0.5, 1] }}
-                  style={{ transformOrigin: 'left center' }}
-                  className="absolute inset-0 w-full h-full z-20 bg-[#fdfbf7] text-[#4a443a] p-5 xs:p-7 sm:p-8 flex flex-col justify-between paper-texture paper-fiber rounded-r-lg"
-                  drag="x"
-                  dragConstraints={{ left: 0, right: 0 }}
-                  dragElastic={0.4}
-                  onDragEnd={handleDragEnd}
+                  custom={direction}
+                  variants={pageVariants}
+                  initial="initial"
+                  animate="animate"
+                  exit="exit"
+                  style={{ 
+                    transformOrigin: 'left center', 
+                    backfaceVisibility: 'hidden', 
+                    transformStyle: 'preserve-3d',
+                    position: 'absolute',
+                    inset: 0,
+                  }}
+                  className="absolute inset-0 w-full h-full bg-[#fdfbf7] text-[#4a443a] p-5 xs:p-7 sm:p-8 flex flex-col justify-between paper-texture paper-fiber rounded-r-lg"
+                  onPanEnd={handleDragEnd}
                 >
+                  {/* Real-time page shadow during flip */}
+                  <motion.div 
+                    initial={{ opacity: 0.15 }}
+                    animate={{ opacity: 0 }}
+                    exit={{ opacity: 0.35 }}
+                    transition={{ duration: 0.75, ease: 'easeInOut' }}
+                    className="absolute inset-0 bg-gradient-to-r from-black/25 via-black/5 to-transparent pointer-events-none z-30"
+                  />
                   <div className="absolute left-0 top-0 bottom-0 w-4 left-spine-gradient pointer-events-none" />
                   <div className="absolute right-0 top-0 bottom-0 w-4 right-spine-gradient pointer-events-none" />
 
@@ -338,17 +409,29 @@ export default function App() {
               {currentPage === 3 && (
                 <motion.div
                   key="page-3"
-                  initial={{ rotateY: direction === 'forward' ? 90 : -90, opacity: 0 }}
-                  animate={{ rotateY: 0, opacity: 1 }}
-                  exit={{ rotateY: direction === 'forward' ? -90 : 90, opacity: 0 }}
-                  transition={{ duration: 0.65, ease: [0.25, 1, 0.5, 1] }}
-                  style={{ transformOrigin: 'left center' }}
-                  className="absolute inset-0 w-full h-full z-20 bg-[#faf9f6] text-[#4a443a] p-5 xs:p-7 sm:p-8 flex flex-col justify-between paper-texture paper-fiber rounded-r-lg"
-                  drag="x"
-                  dragConstraints={{ left: 0, right: 0 }}
-                  dragElastic={0.4}
-                  onDragEnd={handleDragEnd}
+                  custom={direction}
+                  variants={pageVariants}
+                  initial="initial"
+                  animate="animate"
+                  exit="exit"
+                  style={{ 
+                    transformOrigin: 'left center', 
+                    backfaceVisibility: 'hidden', 
+                    transformStyle: 'preserve-3d',
+                    position: 'absolute',
+                    inset: 0,
+                  }}
+                  className="absolute inset-0 w-full h-full bg-[#faf9f6] text-[#4a443a] p-5 xs:p-7 sm:p-8 flex flex-col justify-between paper-texture paper-fiber rounded-r-lg"
+                  onPanEnd={handleDragEnd}
                 >
+                  {/* Real-time page shadow during flip */}
+                  <motion.div 
+                    initial={{ opacity: 0.15 }}
+                    animate={{ opacity: 0 }}
+                    exit={{ opacity: 0.35 }}
+                    transition={{ duration: 0.75, ease: 'easeInOut' }}
+                    className="absolute inset-0 bg-gradient-to-r from-black/25 via-black/5 to-transparent pointer-events-none z-30"
+                  />
                   <div className="absolute left-0 top-0 bottom-0 w-4 left-spine-gradient pointer-events-none" />
                   <div className="absolute right-0 top-0 bottom-0 w-4 right-spine-gradient pointer-events-none" />
 
@@ -415,17 +498,29 @@ export default function App() {
               {currentPage === 4 && (
                 <motion.div
                   key="page-4"
-                  initial={{ rotateY: direction === 'forward' ? 90 : -90, opacity: 0 }}
-                  animate={{ rotateY: 0, opacity: 1 }}
-                  exit={{ rotateY: direction === 'forward' ? -90 : 90, opacity: 0 }}
-                  transition={{ duration: 0.65, ease: [0.25, 1, 0.5, 1] }}
-                  style={{ transformOrigin: 'left center' }}
-                  className="absolute inset-0 w-full h-full z-20 bg-[#faf9f6] text-[#4a443a] p-5 xs:p-7 sm:p-8 flex flex-col justify-between paper-texture paper-fiber rounded-r-lg"
-                  drag="x"
-                  dragConstraints={{ left: 0, right: 0 }}
-                  dragElastic={0.4}
-                  onDragEnd={handleDragEnd}
+                  custom={direction}
+                  variants={pageVariants}
+                  initial="initial"
+                  animate="animate"
+                  exit="exit"
+                  style={{ 
+                    transformOrigin: 'left center', 
+                    backfaceVisibility: 'hidden', 
+                    transformStyle: 'preserve-3d',
+                    position: 'absolute',
+                    inset: 0,
+                  }}
+                  className="absolute inset-0 w-full h-full bg-[#faf9f6] text-[#4a443a] p-5 xs:p-7 sm:p-8 flex flex-col justify-between paper-texture paper-fiber rounded-r-lg"
+                  onPanEnd={handleDragEnd}
                 >
+                  {/* Real-time page shadow during flip */}
+                  <motion.div 
+                    initial={{ opacity: 0.15 }}
+                    animate={{ opacity: 0 }}
+                    exit={{ opacity: 0.35 }}
+                    transition={{ duration: 0.75, ease: 'easeInOut' }}
+                    className="absolute inset-0 bg-gradient-to-r from-black/25 via-black/5 to-transparent pointer-events-none z-30"
+                  />
                   <div className="absolute left-0 top-0 bottom-0 w-4 left-spine-gradient pointer-events-none" />
                   <div className="absolute right-0 top-0 bottom-0 w-4 right-spine-gradient pointer-events-none" />
 
@@ -440,17 +535,29 @@ export default function App() {
               {currentPage === 5 && (
                 <motion.div
                   key="page-5"
-                  initial={{ rotateY: direction === 'forward' ? 90 : -90, opacity: 0 }}
-                  animate={{ rotateY: 0, opacity: 1 }}
-                  exit={{ rotateY: direction === 'forward' ? -90 : 90, opacity: 0 }}
-                  transition={{ duration: 0.65, ease: [0.25, 1, 0.5, 1] }}
-                  style={{ transformOrigin: 'left center' }}
-                  className="absolute inset-0 w-full h-full z-20 bg-[#fdfbf7] text-[#4a443a] p-5 xs:p-7 sm:p-8 flex flex-col justify-between paper-texture paper-fiber rounded-r-lg"
-                  drag="x"
-                  dragConstraints={{ left: 0, right: 0 }}
-                  dragElastic={0.4}
-                  onDragEnd={handleDragEnd}
+                  custom={direction}
+                  variants={pageVariants}
+                  initial="initial"
+                  animate="animate"
+                  exit="exit"
+                  style={{ 
+                    transformOrigin: 'left center', 
+                    backfaceVisibility: 'hidden', 
+                    transformStyle: 'preserve-3d',
+                    position: 'absolute',
+                    inset: 0,
+                  }}
+                  className="absolute inset-0 w-full h-full bg-[#fdfbf7] text-[#4a443a] p-5 xs:p-7 sm:p-8 flex flex-col justify-between paper-texture paper-fiber rounded-r-lg"
+                  onPanEnd={handleDragEnd}
                 >
+                  {/* Real-time page shadow during flip */}
+                  <motion.div 
+                    initial={{ opacity: 0.15 }}
+                    animate={{ opacity: 0 }}
+                    exit={{ opacity: 0.35 }}
+                    transition={{ duration: 0.75, ease: 'easeInOut' }}
+                    className="absolute inset-0 bg-gradient-to-r from-black/25 via-black/5 to-transparent pointer-events-none z-30"
+                  />
                   <div className="absolute left-0 top-0 bottom-0 w-4 left-spine-gradient pointer-events-none" />
                   <div className="absolute right-0 top-0 bottom-0 w-4 right-spine-gradient pointer-events-none" />
 
