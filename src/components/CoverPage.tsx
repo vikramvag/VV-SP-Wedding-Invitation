@@ -152,7 +152,10 @@ export const CoverPage: React.FC<CoverPageProps> = ({ onNext }) => {
 
         {/* Action Button styled as an elegant gold-edged letterpress seal key */}
         <motion.button
-          onClick={onNext}
+          onClick={(e) => {
+            e.stopPropagation();
+            onNext();
+          }}
           whileHover={{ 
             scale: 1.04, 
             boxShadow: '0 4px 12px rgba(140, 126, 109, 0.25)',

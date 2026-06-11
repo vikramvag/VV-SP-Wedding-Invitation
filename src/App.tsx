@@ -18,7 +18,8 @@ import {
   Share2,
   CheckCircle2,
   Users2,
-  Plus
+  Plus,
+  RotateCcw
 } from 'lucide-react';
 
 const pageVariants = {
@@ -110,14 +111,34 @@ export default function App() {
     }
   };
 
-  // Drag handlers for beautiful touch turn gestures
-  const handleDragEnd = (_event: any, info: any) => {
+  // Native touch/pointer gestures for page flipping (highly reliable, doesn't interfere with child/button clicks)
+  const pointerStartRef = React.useRef<number | null>(null);
+
+  const handlePointerDown = (e: React.PointerEvent) => {
+    const target = e.target as HTMLElement;
+    // Don't intercept gestures on interactive elements
+    if (
+      target.closest('button') || 
+      target.closest('input') || 
+      target.closest('select') || 
+      target.closest('textarea')
+    ) {
+      return;
+    }
+    pointerStartRef.current = e.clientX;
+  };
+
+  const handlePointerUp = (e: React.PointerEvent) => {
+    if (pointerStartRef.current === null) return;
+    const diff = pointerStartRef.current - e.clientX;
     const swipeThreshold = 55;
-    if (info.offset.x < -swipeThreshold) {
+
+    if (diff > swipeThreshold) {
       handleNext();
-    } else if (info.offset.x > swipeThreshold) {
+    } else if (diff < -swipeThreshold) {
       handlePrev();
     }
+    pointerStartRef.current = null;
   };
 
   // RSVP Form Submission
@@ -222,7 +243,8 @@ export default function App() {
                     inset: 0,
                   }}
                   className="absolute inset-0 w-full h-full"
-                  onPanEnd={handleDragEnd}
+                  onPointerDown={handlePointerDown}
+                  onPointerUp={handlePointerUp}
                 >
                   <CoverPage onNext={handleNext} />
                   {/* Real-time page shadow during flip */}
@@ -233,6 +255,18 @@ export default function App() {
                     transition={{ duration: 0.75, ease: 'easeInOut' }}
                     className="absolute inset-0 bg-gradient-to-r from-black/25 via-black/5 to-transparent pointer-events-none z-30"
                   />
+                  {/* Small floating gold page flip button at bottom right */}
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleNext();
+                    }}
+                    style={{ transform: 'translateZ(50px)', transformStyle: 'preserve-3d' }}
+                    className="absolute bottom-4 right-4 sm:bottom-5 sm:right-5 w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center bg-gradient-to-br from-[#ffe082] via-[#d4af37] to-[#aa771c] hover:from-[#fff59d] hover:via-[#ffca28] hover:to-[#aa771c] text-[#4a443a]/90 shadow-[0_4px_10px_rgba(140,126,109,0.25)] hover:shadow-[0_6px_14px_rgba(180,150,110,0.4)] transition-all duration-300 hover:scale-110 active:scale-95 border border-[#ffe082]/40 cursor-pointer z-40 group pointer-events-auto"
+                    title="Next Page"
+                  >
+                    <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 text-[#4a443a] group-hover:translate-x-0.5 transition-transform animate-pulse" />
+                  </button>
                 </motion.div>
               )}
 
@@ -252,7 +286,8 @@ export default function App() {
                     inset: 0,
                   }}
                   className="absolute inset-0 w-full h-full bg-[#faf9f6] text-[#4a443a] p-5 xs:p-7 sm:p-8 flex flex-col justify-between paper-texture paper-fiber rounded-r-lg"
-                  onPanEnd={handleDragEnd}
+                  onPointerDown={handlePointerDown}
+                  onPointerUp={handlePointerUp}
                 >
                   {/* Real-time page shadow during flip */}
                   <motion.div 
@@ -304,7 +339,7 @@ export default function App() {
                     </div>
 
                     {/* Bottom layout */}
-                    <div className="text-center scale-95 flex flex-col items-center gap-1.5">
+                    <div className="text-center scale-95 flex flex-col items-center gap-1.5 text-[#8c7e6d]">
                       <GoldDivider className="scale-65 opacity-60" />
                       <div className="flex justify-center items-center gap-2 mt-1">
                         <Users2 className="w-3.5 h-3.5 text-[#8c7e6d]" />
@@ -314,6 +349,19 @@ export default function App() {
                     </div>
 
                   </div>
+
+                  {/* Small floating gold page flip button at bottom right */}
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleNext();
+                    }}
+                    style={{ transform: 'translateZ(50px)', transformStyle: 'preserve-3d' }}
+                    className="absolute bottom-4 right-4 sm:bottom-5 sm:right-5 w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center bg-gradient-to-br from-[#ffe082] via-[#d4af37] to-[#aa771c] hover:from-[#fff59d] hover:via-[#ffca28] hover:to-[#aa771c] text-[#4a443a]/90 shadow-[0_4px_10px_rgba(140,126,109,0.25)] hover:shadow-[0_6px_14px_rgba(180,150,110,0.4)] transition-all duration-300 hover:scale-110 active:scale-95 border border-[#ffe082]/40 cursor-pointer z-40 group pointer-events-auto"
+                    title="Next Page"
+                  >
+                    <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 text-[#4a443a] group-hover:translate-x-0.5 transition-transform" />
+                  </button>
                 </motion.div>
               )}
 
@@ -333,7 +381,8 @@ export default function App() {
                     inset: 0,
                   }}
                   className="absolute inset-0 w-full h-full bg-[#fdfbf7] text-[#4a443a] p-5 xs:p-7 sm:p-8 flex flex-col justify-between paper-texture paper-fiber rounded-r-lg"
-                  onPanEnd={handleDragEnd}
+                  onPointerDown={handlePointerDown}
+                  onPointerUp={handlePointerUp}
                 >
                   {/* Real-time page shadow during flip */}
                   <motion.div 
@@ -403,6 +452,19 @@ export default function App() {
                     </div>
 
                   </div>
+
+                  {/* Small floating gold page flip button at bottom right */}
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleNext();
+                    }}
+                    style={{ transform: 'translateZ(50px)', transformStyle: 'preserve-3d' }}
+                    className="absolute bottom-4 right-4 sm:bottom-5 sm:right-5 w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center bg-gradient-to-br from-[#ffe082] via-[#d4af37] to-[#aa771c] hover:from-[#fff59d] hover:via-[#ffca28] hover:to-[#aa771c] text-[#4a443a]/90 shadow-[0_4px_10px_rgba(140,126,109,0.25)] hover:shadow-[0_6px_14px_rgba(180,150,110,0.4)] transition-all duration-300 hover:scale-110 active:scale-95 border border-[#ffe082]/40 cursor-pointer z-40 group pointer-events-auto"
+                    title="Next Page"
+                  >
+                    <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 text-[#4a443a] group-hover:translate-x-0.5 transition-transform" />
+                  </button>
                 </motion.div>
               )}
 
@@ -422,7 +484,8 @@ export default function App() {
                     inset: 0,
                   }}
                   className="absolute inset-0 w-full h-full bg-[#faf9f6] text-[#4a443a] p-5 xs:p-7 sm:p-8 flex flex-col justify-between paper-texture paper-fiber rounded-r-lg"
-                  onPanEnd={handleDragEnd}
+                  onPointerDown={handlePointerDown}
+                  onPointerUp={handlePointerUp}
                 >
                   {/* Real-time page shadow during flip */}
                   <motion.div 
@@ -492,6 +555,19 @@ export default function App() {
                     </div>
 
                   </div>
+
+                  {/* Small floating gold page flip button at bottom right */}
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleNext();
+                    }}
+                    style={{ transform: 'translateZ(50px)', transformStyle: 'preserve-3d' }}
+                    className="absolute bottom-4 right-4 sm:bottom-5 sm:right-5 w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center bg-gradient-to-br from-[#ffe082] via-[#d4af37] to-[#aa771c] hover:from-[#fff59d] hover:via-[#ffca28] hover:to-[#aa771c] text-[#4a443a]/90 shadow-[0_4px_10px_rgba(140,126,109,0.25)] hover:shadow-[0_6px_14px_rgba(180,150,110,0.4)] transition-all duration-300 hover:scale-110 active:scale-95 border border-[#ffe082]/40 cursor-pointer z-40 group pointer-events-auto"
+                    title="Next Page"
+                  >
+                    <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 text-[#4a443a] group-hover:translate-x-0.5 transition-transform" />
+                  </button>
                 </motion.div>
               )}
 
@@ -511,7 +587,8 @@ export default function App() {
                     inset: 0,
                   }}
                   className="absolute inset-0 w-full h-full bg-[#faf9f6] text-[#4a443a] p-5 xs:p-7 sm:p-8 flex flex-col justify-between paper-texture paper-fiber rounded-r-lg"
-                  onPanEnd={handleDragEnd}
+                  onPointerDown={handlePointerDown}
+                  onPointerUp={handlePointerUp}
                 >
                   {/* Real-time page shadow during flip */}
                   <motion.div 
@@ -529,6 +606,19 @@ export default function App() {
                   <GoldCorner className="absolute top-4 right-4 rotate-90 scale-[0.6] opacity-35" />
 
                   <PhotoGallery />
+
+                  {/* Small floating gold page flip button at bottom right */}
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleNext();
+                    }}
+                    style={{ transform: 'translateZ(50px)', transformStyle: 'preserve-3d' }}
+                    className="absolute bottom-4 right-4 sm:bottom-5 sm:right-5 w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center bg-gradient-to-br from-[#ffe082] via-[#d4af37] to-[#aa771c] hover:from-[#fff59d] hover:via-[#ffca28] hover:to-[#aa771c] text-[#4a443a]/90 shadow-[0_4px_10px_rgba(140,126,109,0.25)] hover:shadow-[0_6px_14px_rgba(180,150,110,0.4)] transition-all duration-300 hover:scale-110 active:scale-95 border border-[#ffe082]/40 cursor-pointer z-40 group pointer-events-auto"
+                    title="Next Page"
+                  >
+                    <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 text-[#4a443a] group-hover:translate-x-0.5 transition-transform" />
+                  </button>
                 </motion.div>
               )}
 
@@ -548,7 +638,8 @@ export default function App() {
                     inset: 0,
                   }}
                   className="absolute inset-0 w-full h-full bg-[#fdfbf7] text-[#4a443a] p-5 xs:p-7 sm:p-8 flex flex-col justify-between paper-texture paper-fiber rounded-r-lg"
-                  onPanEnd={handleDragEnd}
+                  onPointerDown={handlePointerDown}
+                  onPointerUp={handlePointerUp}
                 >
                   {/* Real-time page shadow during flip */}
                   <motion.div 
@@ -689,6 +780,19 @@ export default function App() {
                     </div>
 
                   </div>
+
+                  {/* Small floating gold page flip button at bottom right (loops back to page 0) */}
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handlePageClick(0);
+                    }}
+                    style={{ transform: 'translateZ(50px)', transformStyle: 'preserve-3d' }}
+                    className="absolute bottom-4 right-4 sm:bottom-5 sm:right-5 w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center bg-gradient-to-br from-[#ffe082] via-[#d4af37] to-[#aa771c] hover:from-[#fff59d] hover:via-[#ffca28] hover:to-[#aa771c] text-[#4a443a]/90 shadow-[0_4px_10px_rgba(140,126,109,0.25)] hover:shadow-[0_6px_14px_rgba(180,150,110,0.4)] transition-all duration-300 hover:scale-110 active:scale-95 border border-[#ffe082]/40 cursor-pointer z-40 group pointer-events-auto"
+                    title="Return to Cover Page"
+                  >
+                    <RotateCcw className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#4a443a] group-hover:rotate-[-45deg] transition-transform" />
+                  </button>
                 </motion.div>
               )}
             </AnimatePresence>
