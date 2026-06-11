@@ -41,7 +41,7 @@ export const ITINERARY: DayPlan[] = [
         id: "d2-2",
         time: "11:30 AM",
         title: "Sacred Phere (Vows)",
-        description: "Under a Mandap of white orchids, Vikram & Sweta will walk the sacred seven circles around the fire, binding their souls for seven lifetimes.",
+        description: "Under a Mandap of white orchids, Sweta & Vikram will walk the sacred seven circles around the fire, binding their souls for seven lifetimes.",
         dressCode: "Traditional Indian Silk, Red, Gold, or Peach Traditional Wear",
         location: "The Lotus Pavilion Mandap"
       },

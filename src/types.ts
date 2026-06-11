@@ -1,5 +1,5 @@
 /**
- * Shared Type Declarations for Vikram & Sweta Wedding RSVP & Invitation.
+ * Shared Type Declarations for Sweta & Vikram Wedding RSVP & Invitation.
  */
 
 export interface EventItem {

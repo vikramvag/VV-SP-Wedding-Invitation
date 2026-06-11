@@ -198,7 +198,7 @@ export default function App() {
       newErrors.phoneOrEmail = 'Please provide an email or phone number';
     }
     if (!blessing.trim()) {
-      newErrors.blessing = 'Kindly leave a short blessing for Vikram & Sweta';
+      newErrors.blessing = 'Kindly leave a short blessing for Sweta & Vikram';
     }
 
     if (Object.keys(newErrors).length > 0) {
@@ -247,7 +247,7 @@ export default function App() {
       {/* Decorative Top subtle title */}
       <header className="text-center z-10 w-full mb-2 sm:mb-4 select-none">
         <p className="text-[10px] sm:text-xs uppercase tracking-[0.35em] text-[#8c7e6d] font-bold">
-          Vikram &amp; Sweta &bull; Royal Invitation
+          Sweta &amp; Vikram
         </p>
       </header>
 
@@ -271,7 +271,7 @@ export default function App() {
           
           {/* Animated Page Flip Containment */}
           <div className="relative w-full h-full flex-1" style={{ perspective: '1800px', transformStyle: 'preserve-3d' }}>
-            <AnimatePresence initial={false} custom={direction}>
+            <AnimatePresence initial={true} custom={direction}>
               {currentPage === 0 && (
                 <motion.div
                   key="page-0"
@@ -321,7 +321,7 @@ export default function App() {
                     position: 'absolute',
                     inset: 0,
                   }}
-                  className="absolute inset-0 w-full h-full bg-[#faf9f6] text-[#4a443a] p-5 xs:p-7 sm:p-8 flex flex-col justify-between paper-texture paper-fiber rounded-r-lg touch-pan-y"
+                  className="absolute inset-0 w-full h-full bg-[#faf9f6] text-[#4a443a] p-4 xs:p-6 sm:p-8 flex flex-col justify-between paper-texture paper-fiber rounded-r-lg touch-pan-y"
                   onPointerDown={handlePointerDown}
                   onPointerUp={handlePointerUp}
                   onTouchStart={handleTouchStart}
@@ -347,7 +347,7 @@ export default function App() {
                   <GoldCorner className="absolute bottom-4 right-4 rotate-180 scale-[0.65] opacity-50" />
 
                   {/* Content Container */}
-                  <div className="flex-1 flex flex-col justify-between pt-4 pb-4 px-2">
+                  <div className="flex-1 min-h-0 overflow-y-auto pr-1 flex flex-col justify-between pt-4 pb-4 px-2">
                     
                     {/* Header */}
                     <div className="text-center mt-3 scale-95">
@@ -361,7 +361,7 @@ export default function App() {
                       {/* Round monogram line */}
                       <div className="w-16 h-16 border border-[#8c7e6d]/30 rounded-full mx-auto flex items-center justify-center mb-5 relative">
                         <Heart className="w-6 h-6 text-[#8c7e6d]/80 fill-[#8c7e6d]/10 animate-pulse" />
-                        <span className="absolute -bottom-1 text-[8px] font-mono tracking-widest bg-[#faf9f6] px-2 text-[#8c7e6d]/80">V &amp; S</span>
+                        <span className="absolute -bottom-1 text-[8px] font-mono tracking-widest bg-[#faf9f6] px-2 text-[#8c7e6d]/80">S &amp; V</span>
                       </div>
 
                       <p className="font-cursive text-3xl sm:text-4xl text-[#8c7e6d] leading-none mb-4">
@@ -382,7 +382,7 @@ export default function App() {
                       <GoldDivider className="scale-65 opacity-60" />
                       <div className="flex justify-center items-center gap-2 mt-1">
                         <Users2 className="w-3.5 h-3.5 text-[#8c7e6d]" />
-                        <span className="text-[9px] uppercase tracking-[0.18em] text-[#8c7e6d] font-bold">Vikram &amp; Sweta</span>
+                        <span className="text-[9px] uppercase tracking-[0.18em] text-[#8c7e6d] font-bold">Sweta &amp; Vikram</span>
                       </div>
                       <span className="text-[10px] text-[#8c7e6d]/65 font-mono tracking-widest mt-1.5">— I —</span>
                     </div>
@@ -406,7 +406,7 @@ export default function App() {
                     position: 'absolute',
                     inset: 0,
                   }}
-                  className="absolute inset-0 w-full h-full bg-[#fdfbf7] text-[#4a443a] p-5 xs:p-7 sm:p-8 flex flex-col justify-between paper-texture paper-fiber rounded-r-lg touch-pan-y"
+                  className="absolute inset-0 w-full h-full bg-[#fdfbf7] text-[#4a443a] p-4 xs:p-6 sm:p-8 flex flex-col justify-between paper-texture paper-fiber rounded-r-lg touch-pan-y"
                   onPointerDown={handlePointerDown}
                   onPointerUp={handlePointerUp}
                   onTouchStart={handleTouchStart}
@@ -429,44 +429,44 @@ export default function App() {
                   <GoldCorner className="absolute top-4 right-4 rotate-90 scale-[0.6] opacity-35" />
                   <div className="absolute bottom-4 left-4 right-4 h-px bg-[#eeebe3]" />
 
-                  <div className="flex-1 flex flex-col pt-3 pb-2">
+                  <div className="flex-1 flex flex-col pt-3 pb-2 min-h-0">
                     {/* Header */}
-                    <div className="text-center mb-4">
+                    <div className="text-center mb-3">
                       <span className="text-[10px] uppercase tracking-[0.25em] text-[#8c7e6d] font-bold">Page 01 of Ceremonies</span>
                       <h2 className="font-cinzel text-lg text-[#4a443a]/90 tracking-widest mt-0.5">THE ITINERARY</h2>
                       <div className="h-[1.5px] w-12 bg-[#8c7e6d] mx-auto mt-2" />
                     </div>
 
                     {/* Day 1 Plan info */}
-                    <div className="flex-1 flex flex-col justify-center gap-4">
+                    <div className="flex-1 min-h-0 overflow-y-auto pr-1 flex flex-col justify-start gap-3">
                       
                       {/* Plan Day Header */}
-                      <div className="border-b border-[#eeebe3] pb-2 text-center">
-                        <p className="font-cinzel text-xs uppercase tracking-[0.2em] text-[#8c7e6d] font-bold">DAY 01 &bull; AUG 08, 2026</p>
+                      <div className="border-b border-[#eeebe3] pb-1.5 text-center shrink-0">
+                        <p className="font-cinzel text-[10px] sm:text-xs uppercase tracking-[0.2em] text-[#8c7e6d] font-bold">DAY 01 &bull; AUG 08, 2026</p>
                         <h3 className="font-serif-lux italic text-base -mt-0.5 text-[#4a443a] font-semibold">{ITINERARY[0].subtitle}</h3>
                       </div>
 
                       {/* Events listed */}
-                      <div className="space-y-4">
+                      <div className="space-y-3">
                         {ITINERARY[0].events.map((event) => (
-                          <div key={event.id} className="p-3 bg-white/70 rounded border border-[#eeebe3] hover:border-[#8c7e6d]/30 transition-all shadow-sm">
-                            <div className="flex justify-between items-start gap-1">
-                              <span className="inline-block px-1.5 py-0.5 bg-[#4a443a] text-[#faf9f6] text-[8px] font-mono tracking-wider font-semibold rounded-[2px]">
+                          <div key={event.id} className="p-2.5 xs:p-3 bg-white/70 rounded border border-[#eeebe3] hover:border-[#8c7e6d]/30 transition-all shadow-sm">
+                            <div className="flex justify-between items-center gap-1">
+                              <span className="inline-block px-1.5 py-0.5 bg-[#4a443a] text-[#faf9f6] text-[8px] font-mono tracking-wider font-semibold rounded-[2px] shrink-0">
                                 {event.time}
                               </span>
-                              <span className="text-[9px] text-[#8c7e6d] font-semibold flex items-center gap-1">
-                                <MapPin className="w-2.5 h-2.5" />
-                                {event.location}
+                              <span className="text-[9px] text-[#8c7e6d] font-semibold flex items-center gap-1 max-w-[65%] truncate font-sans-lux">
+                                <MapPin className="w-2.5 h-2.5 shrink-0" />
+                                <span className="truncate">{event.location}</span>
                               </span>
                             </div>
                             
-                            <h4 className="font-serif-lux font-bold text-sm text-[#4a443a] mt-1.5">{event.title}</h4>
+                            <h4 className="font-serif-lux font-bold text-xs sm:text-sm text-[#4a443a] mt-1.5">{event.title}</h4>
                             <p className="text-[11px] leading-relaxed text-[#4a443a]/80 mt-1">{event.description}</p>
                             
-                            <div className="mt-2 pt-1.5 border-t border-[#faf9f6] flex items-center gap-1.5">
-                              <Sparkles className="w-2.5 h-2.5 text-[#8c7e6d] opacity-80" />
-                              <span className="text-[9px] uppercase tracking-[0.05em] text-[#8c7e6d] font-bold">
-                                Wear: <span className="font-normal text-[#4a443a]/90 font-serif-lux italic">{event.dressCode}</span>
+                            <div className="mt-2 pt-1.5 border-t border-[#faf9f6]/95 flex items-center gap-1.5">
+                              <Sparkles className="w-2.5 h-2.5 text-[#8c7e6d] opacity-80 shrink-0" />
+                              <span className="text-[9px] uppercase tracking-[0.05em] text-[#8c7e6d] font-bold truncate">
+                                Wear: <span className="font-normal text-[#4a443a]/90 font-serif-lux italic text-[10px] sm:text-[11px]">{event.dressCode}</span>
                               </span>
                             </div>
                           </div>
@@ -475,7 +475,7 @@ export default function App() {
 
                     </div>
 
-                    <div className="text-center mt-2.5 flex flex-col items-center gap-1.5">
+                    <div className="text-center mt-2.5 flex flex-col items-center gap-1.5 shrink-0">
                       <span className="text-[9px] text-[#8c7e6d] font-mono">Swipe left to proceed &bull; Day 02</span>
                       <span className="text-[10px] text-[#8c7e6d]/65 font-mono tracking-widest">— II —</span>
                     </div>
@@ -499,7 +499,7 @@ export default function App() {
                     position: 'absolute',
                     inset: 0,
                   }}
-                  className="absolute inset-0 w-full h-full bg-[#faf9f6] text-[#4a443a] p-5 xs:p-7 sm:p-8 flex flex-col justify-between paper-texture paper-fiber rounded-r-lg touch-pan-y"
+                  className="absolute inset-0 w-full h-full bg-[#faf9f6] text-[#4a443a] p-4 xs:p-6 sm:p-8 flex flex-col justify-between paper-texture paper-fiber rounded-r-lg touch-pan-y"
                   onPointerDown={handlePointerDown}
                   onPointerUp={handlePointerUp}
                   onTouchStart={handleTouchStart}
@@ -522,44 +522,44 @@ export default function App() {
                   <GoldCorner className="absolute top-4 right-4 rotate-90 scale-[0.6] opacity-35" />
                   <div className="absolute bottom-4 left-4 right-4 h-px bg-[#eeebe3]" />
 
-                  <div className="flex-1 flex flex-col pt-3 pb-2">
+                  <div className="flex-1 flex flex-col pt-3 pb-2 min-h-0">
                     {/* Header */}
-                    <div className="text-center mb-4">
+                    <div className="text-center mb-3">
                       <span className="text-[10px] uppercase tracking-[0.25em] text-[#8c7e6d] font-bold">Page 02 of Ceremonies</span>
                       <h2 className="font-cinzel text-lg text-[#4a443a]/90 tracking-widest mt-0.5">THE ITINERARY</h2>
                       <div className="h-[1.5px] w-12 bg-[#8c7e6d] mx-auto mt-2" />
                     </div>
 
                     {/* Day 2 Plan info */}
-                    <div className="flex-1 flex flex-col justify-center gap-3 overflow-y-auto max-h-[75%] pr-1">
+                    <div className="flex-1 min-h-0 overflow-y-auto pr-1 flex flex-col justify-start gap-3">
                       
                       {/* Plan Day Header */}
-                      <div className="border-b border-[#eeebe3] pb-1.5 text-center">
-                        <p className="font-cinzel text-xs uppercase tracking-[0.2em] text-[#8c7e6d] font-bold">DAY 02 &bull; AUG 09, 2026</p>
+                      <div className="border-b border-[#eeebe3] pb-1.5 text-center shrink-0">
+                        <p className="font-cinzel text-[10px] sm:text-xs uppercase tracking-[0.2em] text-[#8c7e6d] font-bold">DAY 02 &bull; AUG 09, 2026</p>
                         <h3 className="font-serif-lux italic text-base -mt-0.5 text-[#4a443a] font-semibold">{ITINERARY[1].subtitle}</h3>
                       </div>
 
                       {/* Events listed */}
                       <div className="space-y-3">
                         {ITINERARY[1].events.map((event) => (
-                          <div key={event.id} className="p-2.5 bg-white/70 rounded border border-[#eeebe3] hover:border-[#8c7e6d]/30 transition-all shadow-sm">
-                            <div className="flex justify-between items-start gap-1">
-                              <span className="inline-block px-1.5 py-0.5 bg-[#4a443a] text-[#faf9f6] text-[8px] font-mono tracking-wider font-semibold rounded-[2px]">
+                          <div key={event.id} className="p-2.5 xs:p-3 bg-white/70 rounded border border-[#eeebe3] hover:border-[#8c7e6d]/30 transition-all shadow-sm">
+                            <div className="flex justify-between items-center gap-1">
+                              <span className="inline-block px-1.5 py-0.5 bg-[#4a443a] text-[#faf9f6] text-[8px] font-mono tracking-wider font-semibold rounded-[2px] shrink-0">
                                 {event.time}
                               </span>
-                              <span className="text-[9px] text-[#8c7e6d] font-semibold flex items-center gap-1">
-                                <MapPin className="w-2.5 h-2.5" />
-                                {event.location}
+                              <span className="text-[9px] text-[#8c7e6d] font-semibold flex items-center gap-1 max-w-[65%] truncate">
+                                <MapPin className="w-2.5 h-2.5 shrink-0" />
+                                <span className="truncate">{event.location}</span>
                               </span>
                             </div>
                             
-                            <h4 className="font-serif-lux font-bold text-xs sm:text-sm text-[#4a443a] mt-1">{event.title}</h4>
-                            <p className="text-[11px] leading-relaxed text-[#4a443a]/80 mt-0.5">{event.description}</p>
+                            <h4 className="font-serif-lux font-bold text-xs sm:text-sm text-[#4a443a] mt-1.5">{event.title}</h4>
+                            <p className="text-[11px] leading-relaxed text-[#4a443a]/80 mt-1">{event.description}</p>
                             
-                            <div className="mt-1.5 pt-1 border-t border-[#faf9f6] flex items-center gap-1.5">
-                              <Sparkles className="w-2.5 h-2.5 text-[#8c7e6d] opacity-80" />
-                              <span className="text-[9px] uppercase tracking-[0.05em] text-[#8c7e6d] font-bold">
-                                Wear: <span className="font-normal text-[#4a443a]/90 font-serif-lux italic text-[10px]">{event.dressCode}</span>
+                            <div className="mt-2 pt-1.5 border-t border-[#faf9f6] flex items-center gap-1.5">
+                              <Sparkles className="w-2.5 h-2.5 text-[#8c7e6d] opacity-80 shrink-0" />
+                              <span className="text-[9px] uppercase tracking-[0.05em] text-[#8c7e6d] font-bold truncate">
+                                Wear: <span className="font-normal text-[#4a443a]/90 font-serif-lux italic text-[10px] sm:text-[11px]">{event.dressCode}</span>
                               </span>
                             </div>
                           </div>
@@ -568,7 +568,7 @@ export default function App() {
 
                     </div>
 
-                    <div className="text-center mt-2.5 flex flex-col items-center gap-1.5">
+                    <div className="text-center mt-2.5 flex flex-col items-center gap-1.5 shrink-0">
                       <span className="text-[9px] text-[#8c7e6d] font-mono">Next Page &bull; Special Moments Gallery</span>
                       <span className="text-[10px] text-[#8c7e6d]/65 font-mono tracking-widest">— III —</span>
                     </div>
@@ -592,7 +592,7 @@ export default function App() {
                     position: 'absolute',
                     inset: 0,
                   }}
-                  className="absolute inset-0 w-full h-full bg-[#faf9f6] text-[#4a443a] p-5 xs:p-7 sm:p-8 flex flex-col justify-between paper-texture paper-fiber rounded-r-lg touch-pan-y"
+                  className="absolute inset-0 w-full h-full bg-[#faf9f6] text-[#4a443a] p-4 xs:p-6 sm:p-8 flex flex-col justify-between paper-texture paper-fiber rounded-r-lg touch-pan-y"
                   onPointerDown={handlePointerDown}
                   onPointerUp={handlePointerUp}
                   onTouchStart={handleTouchStart}
@@ -633,7 +633,7 @@ export default function App() {
                     position: 'absolute',
                     inset: 0,
                   }}
-                  className="absolute inset-0 w-full h-full bg-[#fdfbf7] text-[#4a443a] p-5 xs:p-7 sm:p-8 flex flex-col justify-between paper-texture paper-fiber rounded-r-lg touch-pan-y"
+                  className="absolute inset-0 w-full h-full bg-[#fdfbf7] text-[#4a443a] p-4 xs:p-6 sm:p-8 flex flex-col justify-between paper-texture paper-fiber rounded-r-lg touch-pan-y"
                   onPointerDown={handlePointerDown}
                   onPointerUp={handlePointerUp}
                   onTouchStart={handleTouchStart}
@@ -655,16 +655,16 @@ export default function App() {
                   <GoldCorner className="absolute top-4 left-4 rotate-0 scale-[0.6] opacity-35" />
                   <GoldCorner className="absolute top-4 right-4 rotate-90 scale-[0.6] opacity-35" />
 
-                  <div className="flex-1 flex flex-col pt-3 pb-1">
+                  <div className="flex-1 flex flex-col pt-3 pb-1 min-h-0">
                     {/* Header */}
-                    <div className="text-center mb-3">
+                    <div className="text-center mb-3 text-amber-900/100">
                       <span className="text-[10px] uppercase tracking-[0.25em] text-[#8c7e6d] font-bold">Honored Invitation</span>
                       <h2 className="font-cinzel text-lg text-[#4a443a]/90 tracking-widest mt-0.5">KINDLY RESPOND</h2>
                       <div className="h-[1.5px] w-12 bg-[#8c7e6d] mx-auto mt-1" />
                     </div>
 
                     {/* RSVP Form body */}
-                    <div className="flex-1 flex flex-col justify-center">
+                    <div className="flex-1 min-h-0 overflow-y-auto pr-1 flex flex-col justify-start py-0.5">
                       {formSubmitted ? (
                         <motion.div 
                            initial={{ scale: 0.95, opacity: 0 }}
@@ -836,11 +836,6 @@ export default function App() {
           </button>
 
         </div>
-
-        {/* Tips indicator */}
-        <p className="text-[10px] text-[#8c7e6d] font-sans-lux text-center opacity-70 italic">
-          Tip: You can also use swipe gestures left/right to flip pages like a real book.
-        </p>
       </footer>
     </div>
   );

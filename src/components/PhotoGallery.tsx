@@ -61,16 +61,16 @@ export const PhotoGallery: React.FC = () => {
   };
 
   return (
-    <div className="flex-1 flex flex-col justify-between pt-3 pb-2 h-full overflow-hidden">
+    <div className="flex-1 min-h-0 flex flex-col justify-between pt-2 pb-1 overflow-hidden">
       {/* Header */}
-      <div className="text-center mb-2.5">
+      <div className="text-center mb-2.5 shrink-0">
         <span className="text-[10px] uppercase tracking-[0.25em] text-[#8c7e6d] font-bold">Captured Moments</span>
         <h2 className="font-cinzel text-lg text-[#4a443a]/90 tracking-widest mt-0.5">OUR GALLERY</h2>
         <div className="h-[1.5px] w-12 bg-[#8c7e6d] mx-auto mt-2" />
       </div>
 
       {/* Filter Chips */}
-      <div className="flex justify-center items-center gap-1.5 mb-3 xs:mb-4 select-none">
+      <div className="flex justify-center items-center gap-1.5 mb-3 xs:mb-4 select-none shrink-0">
         {(['All', 'Engagement', 'Casual'] as const).map((filter) => (
           <button
             key={filter}
@@ -87,7 +87,7 @@ export const PhotoGallery: React.FC = () => {
       </div>
 
       {/* Photo Grid Grid */}
-      <div className="flex-1 overflow-y-auto pr-1 select-none max-h-[71%]">
+      <div className="flex-1 min-h-0 overflow-y-auto pr-1 select-none">
         <div className="grid grid-cols-2 gap-3 pb-2">
           <AnimatePresence mode="popLayout">
             {filteredPhotos.map((photo) => {
@@ -154,9 +154,6 @@ export const PhotoGallery: React.FC = () => {
 
       {/* Footer navigation/caption clue */}
       <div className="text-center pt-2 border-t border-[#eeebe3] mt-2 select-none flex flex-col items-center gap-1.5">
-        <span className="text-[9px] text-[#8c7e6d] font-mono uppercase tracking-wider">
-          Tap any photograph to zoom in &amp; read history
-        </span>
         <span className="text-[10px] text-[#8c7e6d]/65 font-mono tracking-widest">— IV —</span>
       </div>
 

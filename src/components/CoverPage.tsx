@@ -111,7 +111,7 @@ export const CoverPage: React.FC<CoverPageProps> = ({ onNext }) => {
             className="font-cursive text-5xl xs:text-6xl sm:text-7xl px-4 leading-[1.3] text-center select-none pointer-events-none tracking-wide"
             style={goldEmbossedStyle}
           >
-            Vikram &amp; Sweta
+            Sweta &amp; Vikram
           </h1>
         </motion.div>
 
@@ -171,16 +171,6 @@ export const CoverPage: React.FC<CoverPageProps> = ({ onNext }) => {
         >
           Open Invitation
         </motion.button>
-
-        <div className="flex items-center gap-1.5 opacity-80 animate-pulse mt-1 select-none pointer-events-none">
-          <span className="w-1 py-[1px] px-[1px] rounded-full bg-[#8c7e6d]" />
-          <p 
-            className="text-[9px] xs:text-[10px] tracking-widest font-sans uppercase font-bold text-[#8c7e6d]"
-          >
-            Swipe left or scroll to turn pages
-          </p>
-          <span className="w-1 py-[1px] px-[1px] rounded-full bg-[#8c7e6d]" />
-        </div>
       </div>
     </div>
   );
