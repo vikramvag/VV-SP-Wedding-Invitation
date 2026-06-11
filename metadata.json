@@ -1,6 +1,6 @@
 {
   "name": "Sweta and Vikram Wedding Invitation",
-  "description": "A luxury digital book wedding invitation for Sweta and Vikram featuring a 2-day itinerary and interactive RSVP.",
+  "description": "Wedding invitation for Sweta and Vikram featuring a 2-day itinerary and interactive RSVP.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

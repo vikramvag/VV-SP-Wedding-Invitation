@@ -17,7 +17,7 @@ const GALLERY_PHOTOS: GalleryPhoto[] = [
     src: "/src/assets/images/engagement_garden_1781192694348.jpg",
     title: "Golden Hour Promises",
     category: "Engagement",
-    description: "Wrapped in the warm embrace of Rajasthan's golden sun, anticipating a lifetime of laughter.",
+    description: "Wrapped in the warm embrace of Mississauga's golden sun, anticipating a lifetime of laughter.",
     date: "Aug 2025"
   },
   {
@@ -25,7 +25,7 @@ const GALLERY_PHOTOS: GalleryPhoto[] = [
     src: "/src/assets/images/engagement_antique_1781192718235.jpg",
     title: "Terracotta Tones",
     category: "Engagement",
-    description: "Matching the rich heritage of Rajasthan with modern elegance and grace.",
+    description: "Matching the rich heritage of Mississauga with modern elegance and grace.",
     date: "Sep 2025"
   },
   {

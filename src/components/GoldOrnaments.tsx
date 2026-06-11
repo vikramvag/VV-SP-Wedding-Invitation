@@ -77,6 +77,142 @@ export const GoldMandala: React.FC<{ className?: string; strokeGradient?: string
   </svg>
 );
 
+export const GoldGanesha: React.FC<{ className?: string; strokeGradient?: string; style?: React.CSSProperties }> = ({ 
+  className = "", 
+  strokeGradient = "gold-gradient-ornament",
+  style 
+}) => (
+  <svg 
+    viewBox="0 0 320 320" 
+    className={`pointer-events-none fill-none ${className}`}
+    style={{ stroke: `url(#${strokeGradient})`, ...style }}
+    strokeWidth="2.4"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    {/* --- TOP-MOST BINDU & CHANDRA-BINDU ARCHES --- */}
+    {/* Topmost Bindu (dot) */}
+    <circle cx="160" cy="22" r="3.2" fill={`url(#${strokeGradient})`} stroke="none" />
+    
+    {/* Uppermost crescent curve */}
+    <path d="M 148 33 Q 160 26 172 33" strokeWidth="1.8" />
+    
+    {/* Second crescent arch */}
+    <path d="M 142 42 Q 160 33 178 42" strokeWidth="2.2" />
+    
+    {/* Elegant teardrop jewel in forehead center */}
+    <path 
+      d="M 160 48 Q 155 58 160 66 Q 165 58 160 48 Z" 
+      fill={`url(#${strokeGradient})`} 
+      stroke="none" 
+    />
+
+    {/* --- THE INTEGRATED CROWN (MUKUT) AND FOREHEAD BANDS --- */}
+    {/* Crown Inner swooping bar */}
+    <path d="M 106 88 C 122 72, 198 72, 214 88" strokeWidth="2.2" />
+    
+    {/* Crown top contour bar */}
+    <path d="M 116 78 Q 160 52 204 78" strokeWidth="2" opacity="0.9" />
+
+    {/* Elegant Vaishnava forehead Tilak (U-symbol with central droplet stem) */}
+    <path 
+      d="M 152 74 C 152 87, 168 87, 168 74 C 164 74, 163 81, 160 81 C 157 81, 156 74, 152 74 Z" 
+      fill={`url(#${strokeGradient})`} 
+      stroke="none" 
+    />
+
+    {/* --- BROWS AND ALMOND EYES WITH FILLED IRIS --- */}
+    {/* Left Eyebrow */}
+    <path d="M 118 106 Q 134 98, 146 112" strokeWidth="2" />
+    
+    {/* Right Eyebrow */}
+    <path d="M 202 106 Q 186 98, 174 112" strokeWidth="2" />
+
+    {/* Left Eye Upper Lid (Thick and expressive) */}
+    <path d="M 120 118 Q 134 112, 142 128" strokeWidth="2.8" />
+    
+    {/* Left Eye Lower Lid */}
+    <path d="M 122 122 Q 134 130, 141 124" strokeWidth="1.5" />
+    
+    {/* Left Eye Pupil / Iris */}
+    <ellipse cx="132" cy="120" rx="2.5" ry="4.5" fill={`url(#${strokeGradient})`} stroke="none" />
+
+    {/* Right Eye Upper Lid */}
+    <path d="M 200 118 Q 186 112, 178 128" strokeWidth="2.8" />
+    
+    {/* Right Eye Lower Lid */}
+    <path d="M 198 122 Q 186 130, 179 124" strokeWidth="1.5" />
+    
+    {/* Right Eye Pupil / Iris */}
+    <ellipse cx="188" cy="120" rx="2.5" ry="4.5" fill={`url(#${strokeGradient})`} stroke="none" />
+
+
+    {/* --- LARGE ICONIC CONTOURED EARS --- */}
+    {/* Left Ear Outer Arc (Magnificent sweep) */}
+    <path d="M 106 88 C 76 88, 46 98, 56 126 C 64 148, 86 150, 104 136" strokeWidth="2.5" />
+    
+    {/* Left Ear Inner Details */}
+    <path d="M 90 106 C 76 106, 70 114, 76 128 C 82 138, 96 136, 104 126" strokeWidth="1.6" />
+    <path d="M 98 116 Q 88 124, 98 132" strokeWidth="1.2" opacity="0.8" />
+
+    {/* Right Ear Outer Arc */}
+    <path d="M 214 88 C 244 88, 274 98, 264 126 C 256 148, 234 150, 216 136" strokeWidth="2.5" />
+    
+    {/* Right Ear Inner Details */}
+    <path d="M 230 106 C 244 106, 250 114, 244 128 C 238 138, 224 136, 216 126" strokeWidth="1.6" />
+    <path d="M 222 116 Q 232 124, 222 132" strokeWidth="1.2" opacity="0.8" />
+
+
+    {/* --- CHEEKS & POINTED CURVED TUSKS --- */}
+    {/* Left Cheek Contour */}
+    <path d="M 120 125 Q 128 152, 116 164" strokeWidth="1.8" />
+    
+    {/* Right Cheek Contour */}
+    <path d="M 200 125 Q 192 152, 204 164" strokeWidth="1.8" />
+
+    {/* Left Pointy Tusk (Elegant outline shape) */}
+    <path d="M 122 165 Q 102 174, 98 170 Q 116 158, 124 155 Z" strokeWidth="1.5" />
+    
+    {/* Right Pointy Tusk */}
+    <path d="M 198 165 Q 218 174, 222 170 Q 204 158, 196 155 Z" strokeWidth="1.5" />
+
+
+    {/* --- EXPRESSIVE RIDGE DETAIL & THE GRACEFUL SPIRALING TRUNK --- */}
+    {/* Bridge Centerline */}
+    <path d="M 160 128 L 157 172" strokeWidth="1.8" opacity="0.9" />
+    
+    {/* Horizontal ridge crease hatch lines */}
+    <line x1="154" y1="138" x2="164" y2="138" strokeWidth="1.8" />
+    <line x1="153" y1="146" x2="163" y2="146" strokeWidth="1.8" />
+    <line x1="152" y1="154" x2="162" y2="154" strokeWidth="1.8" />
+    <line x1="151" y1="162" x2="161" y2="162" strokeWidth="1.8" />
+    <line x1="150" y1="170" x2="160" y2="170" strokeWidth="1.8" />
+
+    {/* Dynamic curving Trunk looping into a gorgeous high-fidelity spiral to the right */}
+    <path d="M 136 156 Q 130 196, 144 218 Q 158 238, 186 238 Q 216 238, 220 216 Q 224 194, 206 182 Q 188 172, 178 188 Q 170 200, 184 212 Q 196 220, 204 210 Q 208 200, 196 194" strokeWidth="3" />
+
+
+    {/* --- SEATED POSE SWEEPING BASE LINES (CALIPH-STYLE SWASHES) --- */}
+    {/* Belly/Torso bottom base contour line */}
+    <path d="M 152 235 T 160 255 T 168 235" strokeWidth="1.5" opacity="0.8" />
+    
+    {/* Cute Navel loop "u" */}
+    <path d="M 156 244 Q 160 250 164 244" strokeWidth="2" />
+
+    {/* Large sweeping seating brush outline on the left knee/thigh */}
+    <path d="M 100 214 Q 54 200, 48 240 Q 42 280, 84 300 Q 126 312, 170 312" strokeWidth="2.8" />
+    
+    {/* Inner parallel left accent swash */}
+    <path d="M 84 228 Q 58 220, 54 246 Q 50 274, 82 290 Q 114 300, 146 300" strokeWidth="1.6" opacity="0.85" />
+
+    {/* Large sweeping seating brush outline on the right side */}
+    <path d="M 170 312 Q 220 312, 256 300 Q 288 288, 292 254 Q 296 220, 260 214" strokeWidth="2.8" />
+    
+    {/* Highly elegant trailing s-curve swash sweeping under the seating pose */}
+    <path d="M 216 294 Q 250 300, 276 290 Q 302 280, 298 250 C 294 220, 254 224, 240 248 C 226 272, 262 284, 268 262" strokeWidth="2.2" />
+  </svg>
+);
+
 export const GoldDivider: React.FC<{ className?: string; strokeGradient?: string }> = ({ className = "", strokeGradient = "gold-gradient-ornament" }) => (
   <svg 
     viewBox="0 0 300 30" 

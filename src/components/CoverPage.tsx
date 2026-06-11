@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { GoldCorner, GoldMandala, GoldDivider } from './GoldOrnaments';
+import { GoldCorner, GoldGanesha, GoldDivider } from './GoldOrnaments';
 
 interface CoverPageProps {
   onNext: () => void;
@@ -23,12 +23,10 @@ export const CoverPage: React.FC<CoverPageProps> = ({ onNext }) => {
     fontWeight: 'bold',
   };
 
-  // Luxury stamped gold embossed text effect with elegant 3D bevel sheen (matching classic foil pressing)
-  const goldEmbossedStyle: React.CSSProperties = {
-    backgroundImage: 'linear-gradient(135deg, #ffe082 0%, #ffca28 25%, #d4af37 50%, #b38728 75%, #aa771c 100%)',
-    WebkitBackgroundClip: 'text',
-    WebkitTextFillColor: 'transparent',
-    filter: 'drop-shadow(0px 1px 1.5px rgba(0, 0, 0, 0.15))',
+  // Simple gold text without gradient and simple drop shadow
+  const goldSolidStyle: React.CSSProperties = {
+    color: '#d4af37',
+    textShadow: '1px 1px 2.5px rgba(0, 0, 0, 0.28)',
     fontFamily: "'Playfair Display', serif",
   };
 
@@ -83,11 +81,11 @@ export const CoverPage: React.FC<CoverPageProps> = ({ onNext }) => {
           transition={{ duration: 1.5, ease: "easeOut" }}
           className="w-20 h-20 xs:w-26 xs:h-26 mb-3 sm:mb-4 relative"
         >
-          {/* Gold Mandala foil stamp */}
-          <GoldMandala 
-            className="w-full h-full opacity-80 scale-90" 
+          {/* Gold Ganesha foil stamp */}
+          <GoldGanesha 
+            className="w-full h-full opacity-90 scale-95" 
             strokeGradient="gold-gradient-ornament" 
-            style={{ filter: 'drop-shadow(0px 1px 2px rgba(140, 126, 109, 0.2))' }}
+            style={{ filter: 'drop-shadow(0px 1px 2.5px rgba(140, 126, 109, 0.25))' }}
           />
         </motion.div>
 
@@ -109,7 +107,7 @@ export const CoverPage: React.FC<CoverPageProps> = ({ onNext }) => {
           {/* Deep gold-embossed couple names */}
           <h1 
             className="font-cursive text-5xl xs:text-6xl sm:text-7xl px-4 leading-[1.3] text-center select-none pointer-events-none tracking-wide"
-            style={goldEmbossedStyle}
+            style={goldSolidStyle}
           >
             Sweta &amp; Vikram
           </h1>
@@ -146,7 +144,7 @@ export const CoverPage: React.FC<CoverPageProps> = ({ onNext }) => {
           <p 
             className="font-serif-lux text-[10px] xs:text-xs italic mt-0.5 font-bold text-[#8c7e6d]"
           >
-            The Heritage Manor &bull; Rajasthan, India
+            1096, McBride Ave, Mississauga, ON. L5C1M5
           </p>
         </div>
 
