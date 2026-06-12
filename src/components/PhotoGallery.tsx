@@ -2,6 +2,11 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Sparkles, Eye, X, ZoomIn, Heart, SlidersHorizontal } from 'lucide-react';
 
+import gallery1 from '../assets/images/Gallery-1.jpg';
+import gallery2 from '../assets/images/Gallery-2.jpg';
+import gallery3 from '../assets/images/Gallery-3.jpg';
+import gallery4 from '../assets/images/Gallery-4.jpg';
+
 interface GalleryPhoto {
   id: string;
   src: string;
@@ -13,28 +18,28 @@ interface GalleryPhoto {
 const GALLERY_PHOTOS: GalleryPhoto[] = [
   {
     id: "photo-1",
-    src: "/src/assets/images/Gallery-1.jpg",
+    src: gallery1,
     title: "The Beginning",
     description: "The met for the first time and felt like they’ve known each other since ages",
     date: "First Meeting"
   },
   {
     id: "photo-2",
-    src: "/src/assets/images/Gallery-2.jpg",
+    src: gallery2,
     title: "She Said Yes",
     description: "This is a dramatic recreation of the moment but IYKYK :P",
     date: "The Proposal"
   },
   {
     id: "photo-3",
-    src: "/src/assets/images/Gallery-3.jpg",
+    src: gallery3,
     title: "Rings Exchanged",
     description: "Engaged on March 14th, dreamed of living together forever",
     date: "March 14"
   },
   {
     id: "photo-4",
-    src: "/src/assets/images/Gallery-4.jpg",
+    src: gallery4,
     title: "Love is Blossoming",
     description: "Chasing flowers and clouds. Calm, content and holding hands till eternity",
     date: "Blossoming Love"

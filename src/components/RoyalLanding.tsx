@@ -2,8 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'motion/react';
 import { Sparkles, Heart } from 'lucide-react';
 
-const scrollImage = "/src/assets/images/wedding_scroll_invitation.jpg";
-const fallbackImage = "/src/assets/images/royal_gold_blue_pastel_mockup_1781209599267.jpg";
+import scrollImage from '../assets/images/wedding_scroll_invitation.jpg';
+import fallbackImage from '../assets/images/royal_gold_blue_pastel_mockup_1781209599267.jpg';
 
 interface RoyalLandingProps {
   onOpen: () => void;
