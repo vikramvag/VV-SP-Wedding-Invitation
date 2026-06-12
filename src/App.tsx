@@ -80,6 +80,7 @@ export default function App() {
   const [phoneOrEmail, setPhoneOrEmail] = useState('');
   const [attendance, setAttendance] = useState<AttendanceStatus>('Attending');
   const [mealPreference, setMealPreference] = useState<MealOption>('Vegetarian');
+  const [guestCount, setGuestCount] = useState<number>(1);
   const [blessing, setBlessing] = useState('');
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
@@ -258,6 +259,7 @@ export default function App() {
       phoneOrEmail: phoneOrEmail.trim(),
       attendance,
       mealPreference,
+      guestCount,
       blessing: blessing.trim(),
       submittedAt: new Date().toISOString()
     };
@@ -270,6 +272,7 @@ export default function App() {
     setPhoneOrEmail('');
     setAttendance('Attending');
     setMealPreference('Vegetarian');
+    setGuestCount(1);
     setBlessing('');
   };
 
@@ -602,7 +605,7 @@ export default function App() {
                     </div>
 
                     <div className="text-center mt-2 flex flex-col items-center gap-1 shrink-0">
-                      <span className="text-[9px] text-[#8c7e6d] font-mono">Next Page &bull; Photo Gallery</span>
+                      <span className="text-[9px] text-[#8c7e6d] font-mono">Next Page &bull; Kindly Respond</span>
                       <span className="text-[10px] text-[#8c7e6d]/65 font-mono tracking-widest">— II —</span>
                     </div>
 
@@ -613,47 +616,6 @@ export default function App() {
               {currentPage === 3 && (
                 <motion.div
                   key="page-3"
-                  custom={direction}
-                  variants={pageVariants}
-                  initial="initial"
-                  animate="animate"
-                  exit="exit"
-                  style={{ 
-                    transformOrigin: 'left center', 
-                    backfaceVisibility: 'hidden', 
-                    transformStyle: 'preserve-3d',
-                    position: 'absolute',
-                    inset: 0,
-                  }}
-                  className="absolute inset-0 w-full h-full bg-[#faf9f6] text-[#4a443a] p-4 xs:p-6 sm:p-8 flex flex-col justify-between paper-texture paper-fiber rounded-r-lg touch-pan-y"
-                  onPointerDown={handlePointerDown}
-                  onPointerUp={handlePointerUp}
-                  onTouchStart={handleTouchStart}
-                  onTouchMove={handleTouchMove}
-                  onTouchEnd={handleTouchEnd}
-                >
-                  {/* Real-time page shadow during flip */}
-                  <motion.div 
-                    initial={{ opacity: 0.15 }}
-                    animate={{ opacity: 0 }}
-                    exit={{ opacity: 0.35 }}
-                    transition={{ duration: 0.75, ease: 'easeInOut' }}
-                    className="absolute inset-0 bg-gradient-to-r from-black/25 via-black/5 to-transparent pointer-events-none z-30"
-                  />
-                  <div className="absolute left-0 top-0 bottom-0 w-4 left-spine-gradient pointer-events-none" />
-                  <div className="absolute right-0 top-0 bottom-0 w-4 right-spine-gradient pointer-events-none" />
-
-                  {/* Corner details */}
-                  <GoldCorner className="absolute top-4 left-4 rotate-0 scale-[0.6] opacity-35" />
-                  <GoldCorner className="absolute top-4 right-4 rotate-90 scale-[0.6] opacity-35" />
-
-                  <PhotoGallery />
-                </motion.div>
-              )}
-
-              {currentPage === 4 && (
-                <motion.div
-                  key="page-4"
                   custom={direction}
                   variants={pageVariants}
                   initial="initial"
@@ -751,6 +713,21 @@ export default function App() {
                             )}
                           </div>
 
+                          {/* Number of Guests Dropdown */}
+                          <div>
+                            <label className="text-[10px] uppercase tracking-wider block mb-0.5 text-[#8c7e6d] font-bold">Number of Guests (Including You)</label>
+                            <select 
+                              value={guestCount}
+                              onChange={(e) => setGuestCount(Number(e.target.value))}
+                              className="w-full bg-white/60 px-2 py-1.5 border border-[#d1cec4] focus:border-[#8c7e6d] text-xs focus:outline-none rounded-[2px] font-sans-lux font-semibold"
+                            >
+                              <option value={1}>1 Guest</option>
+                              <option value={2}>2 Guests</option>
+                              <option value={3}>3 Guests</option>
+                              <option value={4}>4 Guests</option>
+                            </select>
+                          </div>
+
                           {/* Attendance selector split */}
                           <div className="grid grid-cols-2 gap-2">
                             <div>
@@ -804,14 +781,56 @@ export default function App() {
                       )}
                     </div>
 
-                    <div className="text-center mt-2 flex flex-col items-center gap-1.5">
-                      <span className="text-[9px] text-[#8c7e6d] font-mono">We look forward to celebrating with you!</span>
-                      <span className="text-[10px] text-[#8c7e6d]/65 font-mono tracking-widest">— IV —</span>
+                    <div className="text-center mt-2 flex flex-col items-center gap-1">
+                      <p className="text-[10px] uppercase tracking-[0.15em] text-[#8c7e6d] font-bold animate-pulse">Respond by 20th June</p>
+                      <span className="text-[9px] text-[#8c7e6d] font-mono">Next Page &bull; Photo Gallery</span>
+                      <span className="text-[10px] text-[#8c7e6d]/65 font-mono tracking-widest">— III —</span>
                     </div>
 
                   </div>
 
 
+                </motion.div>
+              )}
+
+              {currentPage === 4 && (
+                <motion.div
+                  key="page-4"
+                  custom={direction}
+                  variants={pageVariants}
+                  initial="initial"
+                  animate="animate"
+                  exit="exit"
+                  style={{ 
+                    transformOrigin: 'left center', 
+                    backfaceVisibility: 'hidden', 
+                    transformStyle: 'preserve-3d',
+                    position: 'absolute',
+                    inset: 0,
+                  }}
+                  className="absolute inset-0 w-full h-full bg-[#faf9f6] text-[#4a443a] p-4 xs:p-6 sm:p-8 flex flex-col justify-between paper-texture paper-fiber rounded-r-lg touch-pan-y"
+                  onPointerDown={handlePointerDown}
+                  onPointerUp={handlePointerUp}
+                  onTouchStart={handleTouchStart}
+                  onTouchMove={handleTouchMove}
+                  onTouchEnd={handleTouchEnd}
+                >
+                  {/* Real-time page shadow during flip */}
+                  <motion.div 
+                    initial={{ opacity: 0.15 }}
+                    animate={{ opacity: 0 }}
+                    exit={{ opacity: 0.35 }}
+                    transition={{ duration: 0.75, ease: 'easeInOut' }}
+                    className="absolute inset-0 bg-gradient-to-r from-black/25 via-black/5 to-transparent pointer-events-none z-30"
+                  />
+                  <div className="absolute left-0 top-0 bottom-0 w-4 left-spine-gradient pointer-events-none" />
+                  <div className="absolute right-0 top-0 bottom-0 w-4 right-spine-gradient pointer-events-none" />
+
+                  {/* Corner details */}
+                  <GoldCorner className="absolute top-4 left-4 rotate-0 scale-[0.6] opacity-35" />
+                  <GoldCorner className="absolute top-4 right-4 rotate-90 scale-[0.6] opacity-35" />
+
+                  <PhotoGallery />
                 </motion.div>
               )}
             </AnimatePresence>

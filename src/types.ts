@@ -28,6 +28,7 @@ export interface RSVPResponse {
   phoneOrEmail: string;
   attendance: AttendanceStatus;
   mealPreference: MealOption;
+  guestCount?: number;
   blessing: string;
   submittedAt: string;
 }

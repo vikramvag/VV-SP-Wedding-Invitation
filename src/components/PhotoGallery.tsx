@@ -127,7 +127,7 @@ export const PhotoGallery: React.FC = () => {
 
       {/* Footer navigation/caption clue */}
       <div className="text-center pt-2 border-t border-[#eeebe3] mt-2 select-none flex flex-col items-center gap-1.5">
-        <span className="text-[10px] text-[#8c7e6d]/65 font-mono tracking-widest">— III —</span>
+        <span className="text-[10px] text-[#8c7e6d]/65 font-mono tracking-widest">— IV —</span>
       </div>
 
       {/* Lightbox Modal */}
