@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { CoverPage } from './components/CoverPage';
 import { PhotoGallery } from './components/PhotoGallery';
 import { RoyalLanding } from './components/RoyalLanding';
-import { playFlipSound, startBackgroundMusic, isMusicPlaying } from './components/AudioEffects';
+import { playFlipSound, startBackgroundMusic, stopBackgroundMusic, isMusicPlaying } from './components/AudioEffects';
 import { ITINERARY, INITIAL_REGISTRY } from './data';
 import { DayPlan, RSVPResponse, AttendanceStatus, MealOption } from './types';
 import { GoldCorner, GoldDivider, GoldGradientDef } from './components/GoldOrnaments';
@@ -20,7 +20,9 @@ import {
   CheckCircle2,
   Users2,
   Plus,
-  RotateCcw
+  RotateCcw,
+  Volume2,
+  VolumeX
 } from 'lucide-react';
 
 const pageVariants = {
@@ -81,7 +83,27 @@ export default function App() {
   const [blessing, setBlessing] = useState('');
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
-  const totalPages = 6;
+  const totalPages = 5;
+  const [musicPlaying, setMusicPlaying] = useState(false);
+
+  // Poll actual HTML5 audio state periodically to keep React UI controls perfectly in sync
+  useEffect(() => {
+    if (!landingOpened) return;
+    const interval = setInterval(() => {
+      setMusicPlaying(isMusicPlaying());
+    }, 600);
+    return () => clearInterval(interval);
+  }, [landingOpened]);
+
+  const handleMusicToggle = () => {
+    if (isMusicPlaying()) {
+      stopBackgroundMusic();
+      setMusicPlaying(false);
+    } else {
+      startBackgroundMusic();
+      setMusicPlaying(true);
+    }
+  };
 
   // Save registry changes to localStorage
   useEffect(() => {
@@ -264,6 +286,27 @@ export default function App() {
           />
         )}
       </AnimatePresence>
+
+      {/* Floating Music Controller */}
+      {landingOpened && (
+        <button
+          onClick={handleMusicToggle}
+          className="fixed top-3 right-3 sm:top-5 sm:right-5 z-50 p-2 text-[#e2c175] bg-[#4a443a]/95 backdrop-blur-sm rounded-full border border-[#8c7e6d]/30 shadow-lg hover:bg-[#4a443a] transition-all flex items-center justify-center cursor-pointer group"
+          title={musicPlaying ? "Mute Background Music" : "Play Background Music"}
+        >
+          {musicPlaying ? (
+            <div className="flex items-center gap-1.5 px-2 py-0.5">
+              <span className="text-[10px] sm:text-xs font-mono font-bold tracking-widest hidden group-hover:inline-block">PLAYING</span>
+              <Volume2 className="w-4 h-4 animate-bounce" />
+            </div>
+          ) : (
+            <div className="flex items-center gap-1.5 px-2 py-0.5">
+              <span className="text-[10px] sm:text-xs font-mono font-bold tracking-widest hidden group-hover:inline-block">PAUSED</span>
+              <VolumeX className="w-4 h-4" />
+            </div>
+          )}
+        </button>
+      )}
 
       {/* Absolute background patterns */}
       <div className="absolute inset-0 opacity-[0.03] select-none pointer-events-none overflow-hidden">
@@ -468,52 +511,98 @@ export default function App() {
                   <div className="flex-1 flex flex-col pt-3 pb-2 min-h-0">
                     {/* Header */}
                     <div className="text-center mb-3">
-                      <h2 className="font-cinzel text-lg text-[#4a443a]/90 tracking-widest mt-0.5">Itinerary – Day 1</h2>
-                      <div className="h-[1.5px] w-12 bg-[#8c7e6d] mx-auto mt-2" />
+                      <h2 className="font-cinzel text-base sm:text-lg text-[#4a443a]/90 tracking-widest mt-0.5">Wedding Itinerary</h2>
+                      <div className="h-[1.5px] w-12 bg-[#8c7e6d] mx-auto mt-1.5" />
                     </div>
 
-                    {/* Day 1 Plan info */}
-                    <div className="flex-1 min-h-0 overflow-y-auto pr-1 flex flex-col justify-start gap-3">
+                    {/* Unified scroll list */}
+                    <div className="flex-1 min-h-0 overflow-y-auto pr-1 flex flex-col gap-4">
                       
-                      {/* Plan Day Header */}
-                      <div className="border-b border-[#eeebe3] pb-1.5 text-center shrink-0">
-                        <p className="font-cinzel text-[10px] sm:text-xs uppercase tracking-[0.2em] text-[#8c7e6d] font-bold">DAY 01 &bull; AUG 08, 2026</p>
-                        <h3 className="font-serif-lux italic text-base -mt-0.5 text-[#4a443a] font-semibold">{ITINERARY[0].subtitle}</h3>
-                      </div>
+                      {/* Day 1 Section */}
+                      <div className="space-y-2.5">
+                        <div className="border-b border-[#eeebe3] pb-1 bg-[#4a443a]/5 p-2 rounded text-center shrink-0">
+                          <p className="font-cinzel text-[9px] sm:text-[10px] uppercase tracking-[0.18em] text-[#8c7e6d] font-bold">DAY 01 &bull; AUG 08, 2026</p>
+                          <h3 className="font-serif-lux italic text-xs sm:text-sm text-[#4a443a] font-semibold">{ITINERARY[0].subtitle}</h3>
+                        </div>
 
-                      {/* Events listed */}
-                      <div className="space-y-3">
-                        {ITINERARY[0].events.map((event) => (
-                          <div key={event.id} className="p-2.5 xs:p-3 bg-white/70 rounded border border-[#eeebe3] hover:border-[#8c7e6d]/30 transition-all shadow-sm">
-                            <div className="flex justify-between items-center gap-1">
-                              <span className="inline-block px-1.5 py-0.5 bg-[#4a443a] text-[#faf9f6] text-[8px] font-mono tracking-wider font-semibold rounded-[2px] shrink-0">
-                                {event.time}
-                              </span>
-                              <span className="text-[9px] text-[#8c7e6d] font-semibold flex items-center gap-1 max-w-[65%] truncate font-sans-lux">
-                                <MapPin className="w-2.5 h-2.5 shrink-0" />
-                                <span className="truncate">{event.location}</span>
-                              </span>
-                            </div>
-                            
-                            <h4 className="font-serif-lux font-bold text-xs sm:text-sm text-[#4a443a] mt-1.5">{event.title}</h4>
-                            <p className="text-[11px] leading-relaxed text-[#4a443a]/80 mt-1">{event.description}</p>
-                            
-                            {event.dressCode && (
-                              <div className="mt-2 pt-1.5 border-t border-[#faf9f6]/95 flex items-center gap-1.5">
-                                <Sparkles className="w-2.5 h-2.5 text-[#8c7e6d] opacity-80 shrink-0" />
-                                <span className="text-[9px] uppercase tracking-[0.05em] text-[#8c7e6d] font-bold truncate">
-                                  Wear: <span className="font-normal text-[#4a443a]/90 font-serif-lux italic text-[10px] sm:text-[11px]">{event.dressCode}</span>
+                        {/* Events listed */}
+                        <div className="space-y-2">
+                          {ITINERARY[0].events.map((event) => (
+                            <div key={event.id} className="p-2.5 bg-white/70 rounded border border-[#eeebe3] hover:border-[#8c7e6d]/30 transition-all shadow-sm">
+                              <div className="flex justify-between items-center gap-1">
+                                <span className="inline-block px-1.5 py-0.5 bg-[#4a443a] text-[#faf9f6] text-[8px] font-mono tracking-wider font-semibold rounded-[2px] shrink-0">
+                                  {event.time}
+                                </span>
+                                <span className="text-[9px] text-[#8c7e6d] font-semibold flex items-center gap-1 max-w-[65%] truncate font-sans-lux">
+                                  <MapPin className="w-2.5 h-2.5 shrink-0" />
+                                  <span className="truncate">{event.location}</span>
                                 </span>
                               </div>
-                            )}
-                          </div>
-                        ))}
+                              
+                              <h4 className="font-serif-lux font-bold text-xs sm:text-sm text-[#4a443a] mt-1.5">{event.title}</h4>
+                              <p className="text-[10px] leading-relaxed text-[#4a443a]/80 mt-1">{event.description}</p>
+                              
+                              {event.dressCode && (
+                                <div className="mt-2 pt-1.5 border-t border-[#faf9f6]/95 flex items-center gap-1.5">
+                                  <Sparkles className="w-2.5 h-2.5 text-[#8c7e6d] opacity-80 shrink-0" />
+                                  <span className="text-[9px] uppercase tracking-[0.05em] text-[#8c7e6d] font-bold truncate">
+                                    Wear: <span className="font-normal text-[#4a443a]/90 font-serif-lux italic text-[10px] sm:text-[11px]">{event.dressCode}</span>
+                                  </span>
+                                </div>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Spacer / Decorative Gilded Divider */}
+                      <div className="flex items-center justify-center gap-2 py-1 select-none shrink-0">
+                        <div className="h-px w-6 bg-[#8c7e6d]/30" />
+                        <Sparkles className="w-2.5 h-2.5 text-[#e2c175]" />
+                        <div className="h-px w-6 bg-[#8c7e6d]/30" />
+                      </div>
+
+                      {/* Day 2 Section */}
+                      <div className="space-y-2.5">
+                        <div className="border-b border-[#eeebe3] pb-1 bg-[#4a443a]/5 p-2 rounded text-center shrink-0">
+                          <p className="font-cinzel text-[9px] sm:text-[10px] uppercase tracking-[0.18em] text-[#8c7e6d] font-bold">DAY 02 &bull; AUG 09, 2026</p>
+                          <h3 className="font-serif-lux italic text-xs sm:text-sm text-[#4a443a] font-semibold">{ITINERARY[1].subtitle}</h3>
+                        </div>
+
+                        {/* Events listed */}
+                        <div className="space-y-2">
+                          {ITINERARY[1].events.map((event) => (
+                            <div key={event.id} className="p-2.5 bg-white/70 rounded border border-[#eeebe3] hover:border-[#8c7e6d]/30 transition-all shadow-sm">
+                              <div className="flex justify-between items-center gap-1">
+                                <span className="inline-block px-1.5 py-0.5 bg-[#4a443a] text-[#faf9f6] text-[8px] font-mono tracking-wider font-semibold rounded-[2px] shrink-0">
+                                  {event.time}
+                                </span>
+                                <span className="text-[9px] text-[#8c7e6d] font-semibold flex items-center gap-1 max-w-[65%] truncate">
+                                  <MapPin className="w-2.5 h-2.5 shrink-0" />
+                                  <span className="truncate">{event.location}</span>
+                                </span>
+                              </div>
+                              
+                              <h4 className="font-serif-lux font-bold text-xs sm:text-sm text-[#4a443a] mt-1.5">{event.title}</h4>
+                              <p className="text-[10px] leading-relaxed text-[#4a443a]/80 mt-1">{event.description}</p>
+                              
+                              {event.dressCode && (
+                                <div className="mt-2 pt-1.5 border-t border-[#faf9f6] flex items-center gap-1.5">
+                                  <Sparkles className="w-2.5 h-2.5 text-[#8c7e6d] opacity-80 shrink-0" />
+                                  <span className="text-[9px] uppercase tracking-[0.05em] text-[#8c7e6d] font-bold truncate">
+                                    Wear: <span className="font-normal text-[#4a443a]/90 font-serif-lux italic text-[10px] sm:text-[11px]">{event.dressCode}</span>
+                                  </span>
+                                </div>
+                              )}
+                            </div>
+                          ))}
+                        </div>
                       </div>
 
                     </div>
 
-                    <div className="text-center mt-2.5 flex flex-col items-center gap-1.5 shrink-0">
-                      <span className="text-[9px] text-[#8c7e6d] font-mono">Swipe left to proceed &bull; Day 02</span>
+                    <div className="text-center mt-2 flex flex-col items-center gap-1 shrink-0">
+                      <span className="text-[9px] text-[#8c7e6d] font-mono">Next Page &bull; Photo Gallery</span>
                       <span className="text-[10px] text-[#8c7e6d]/65 font-mono tracking-widest">— II —</span>
                     </div>
 
@@ -557,108 +646,14 @@ export default function App() {
                   {/* Corner details */}
                   <GoldCorner className="absolute top-4 left-4 rotate-0 scale-[0.6] opacity-35" />
                   <GoldCorner className="absolute top-4 right-4 rotate-90 scale-[0.6] opacity-35" />
-                  <div className="absolute bottom-4 left-4 right-4 h-px bg-[#eeebe3]" />
 
-                  <div className="flex-1 flex flex-col pt-3 pb-2 min-h-0">
-                    {/* Header */}
-                    <div className="text-center mb-3">
-                      <h2 className="font-cinzel text-lg text-[#4a443a]/90 tracking-widest mt-0.5">Itinerary – Day 2</h2>
-                      <div className="h-[1.5px] w-12 bg-[#8c7e6d] mx-auto mt-2" />
-                    </div>
-
-                    {/* Day 2 Plan info */}
-                    <div className="flex-1 min-h-0 overflow-y-auto pr-1 flex flex-col justify-start gap-3">
-                      
-                      {/* Plan Day Header */}
-                      <div className="border-b border-[#eeebe3] pb-1.5 text-center shrink-0">
-                        <p className="font-cinzel text-[10px] sm:text-xs uppercase tracking-[0.2em] text-[#8c7e6d] font-bold">DAY 02 &bull; AUG 09, 2026</p>
-                        <h3 className="font-serif-lux italic text-base -mt-0.5 text-[#4a443a] font-semibold">{ITINERARY[1].subtitle}</h3>
-                      </div>
-
-                      {/* Events listed */}
-                      <div className="space-y-3">
-                        {ITINERARY[1].events.map((event) => (
-                          <div key={event.id} className="p-2.5 xs:p-3 bg-white/70 rounded border border-[#eeebe3] hover:border-[#8c7e6d]/30 transition-all shadow-sm">
-                            <div className="flex justify-between items-center gap-1">
-                              <span className="inline-block px-1.5 py-0.5 bg-[#4a443a] text-[#faf9f6] text-[8px] font-mono tracking-wider font-semibold rounded-[2px] shrink-0">
-                                {event.time}
-                              </span>
-                              <span className="text-[9px] text-[#8c7e6d] font-semibold flex items-center gap-1 max-w-[65%] truncate">
-                                <MapPin className="w-2.5 h-2.5 shrink-0" />
-                                <span className="truncate">{event.location}</span>
-                              </span>
-                            </div>
-                            
-                            <h4 className="font-serif-lux font-bold text-xs sm:text-sm text-[#4a443a] mt-1.5">{event.title}</h4>
-                            <p className="text-[11px] leading-relaxed text-[#4a443a]/80 mt-1">{event.description}</p>
-                            
-                            {event.dressCode && (
-                              <div className="mt-2 pt-1.5 border-t border-[#faf9f6] flex items-center gap-1.5">
-                                <Sparkles className="w-2.5 h-2.5 text-[#8c7e6d] opacity-80 shrink-0" />
-                                <span className="text-[9px] uppercase tracking-[0.05em] text-[#8c7e6d] font-bold truncate">
-                                  Wear: <span className="font-normal text-[#4a443a]/90 font-serif-lux italic text-[10px] sm:text-[11px]">{event.dressCode}</span>
-                                </span>
-                              </div>
-                            )}
-                          </div>
-                        ))}
-                      </div>
-
-                    </div>
-
-                    <div className="text-center mt-2.5 flex flex-col items-center gap-1.5 shrink-0">
-                      <span className="text-[9px] text-[#8c7e6d] font-mono">Next Page &bull; Special Moments Gallery</span>
-                      <span className="text-[10px] text-[#8c7e6d]/65 font-mono tracking-widest">— III —</span>
-                    </div>
-
-                  </div>
+                  <PhotoGallery />
                 </motion.div>
               )}
 
               {currentPage === 4 && (
                 <motion.div
                   key="page-4"
-                  custom={direction}
-                  variants={pageVariants}
-                  initial="initial"
-                  animate="animate"
-                  exit="exit"
-                  style={{ 
-                    transformOrigin: 'left center', 
-                    backfaceVisibility: 'hidden', 
-                    transformStyle: 'preserve-3d',
-                    position: 'absolute',
-                    inset: 0,
-                  }}
-                  className="absolute inset-0 w-full h-full bg-[#faf9f6] text-[#4a443a] p-4 xs:p-6 sm:p-8 flex flex-col justify-between paper-texture paper-fiber rounded-r-lg touch-pan-y"
-                  onPointerDown={handlePointerDown}
-                  onPointerUp={handlePointerUp}
-                  onTouchStart={handleTouchStart}
-                  onTouchMove={handleTouchMove}
-                  onTouchEnd={handleTouchEnd}
-                >
-                  {/* Real-time page shadow during flip */}
-                  <motion.div 
-                    initial={{ opacity: 0.15 }}
-                    animate={{ opacity: 0 }}
-                    exit={{ opacity: 0.35 }}
-                    transition={{ duration: 0.75, ease: 'easeInOut' }}
-                    className="absolute inset-0 bg-gradient-to-r from-black/25 via-black/5 to-transparent pointer-events-none z-30"
-                  />
-                  <div className="absolute left-0 top-0 bottom-0 w-4 left-spine-gradient pointer-events-none" />
-                  <div className="absolute right-0 top-0 bottom-0 w-4 right-spine-gradient pointer-events-none" />
-
-                  {/* Corner details */}
-                  <GoldCorner className="absolute top-4 left-4 rotate-0 scale-[0.6] opacity-35" />
-                  <GoldCorner className="absolute top-4 right-4 rotate-90 scale-[0.6] opacity-35" />
-
-                  <PhotoGallery />
-                </motion.div>
-              )}
-
-              {currentPage === 5 && (
-                <motion.div
-                  key="page-5"
                   custom={direction}
                   variants={pageVariants}
                   initial="initial"
@@ -801,7 +796,7 @@ export default function App() {
                           {/* Submit button */}
                           <button 
                             type="submit" 
-                            className="w-full mt-2 py-2.5 bg-[#4a443a] text-[#faf9f6] text-[10px] uppercase tracking-[0.3em] font-bold hover:bg-[#8c7e6d] transition-colors focus:ring-1 focus:ring-[#8c7e6d] focus:outline-none cursor-pointer rounded-none"
+                            className="w-full mt-2 py-2.5 bg-[#4a443a] text-[#faf9f6]/95 text-[10px] uppercase tracking-[0.3em] font-bold hover:bg-[#8c7e6d] transition-colors focus:ring-1 focus:ring-[#8c7e6d] focus:outline-none cursor-pointer rounded-none"
                           >
                             Confirm Attendance
                           </button>
@@ -811,7 +806,7 @@ export default function App() {
 
                     <div className="text-center mt-2 flex flex-col items-center gap-1.5">
                       <span className="text-[9px] text-[#8c7e6d] font-mono">We look forward to celebrating with you!</span>
-                      <span className="text-[10px] text-[#8c7e6d]/65 font-mono tracking-widest">— V —</span>
+                      <span className="text-[10px] text-[#8c7e6d]/65 font-mono tracking-widest">— IV —</span>
                     </div>
 
                   </div>

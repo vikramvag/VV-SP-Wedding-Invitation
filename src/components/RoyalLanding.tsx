@@ -55,9 +55,11 @@ export const RoyalLanding: React.FC<RoyalLandingProps> = ({ onOpen }) => {
 
   // Prevent scroll propagation on touch devices to ensure swipe signals register
   const touchStartY = useRef<number | null>(null);
+  const swipeDetected = useRef<boolean>(false);
 
   const handleTouchStart = (e: React.TouchEvent) => {
     touchStartY.current = e.touches[0].clientY;
+    swipeDetected.current = false;
   };
 
   const handleTouchMove = (e: React.TouchEvent) => {
@@ -66,10 +68,17 @@ export const RoyalLanding: React.FC<RoyalLandingProps> = ({ onOpen }) => {
     const diffY = touchStartY.current - currentY;
     
     // Swipe distance threshold
-    if (Math.abs(diffY) > 8) {
-      triggerOpen();
-      touchStartY.current = null;
+    if (Math.abs(diffY) > 20) {
+      swipeDetected.current = true;
     }
+  };
+
+  const handleTouchEnd = () => {
+    if (swipeDetected.current) {
+      triggerOpen();
+    }
+    touchStartY.current = null;
+    swipeDetected.current = false;
   };
 
   return (
@@ -80,6 +89,7 @@ export const RoyalLanding: React.FC<RoyalLandingProps> = ({ onOpen }) => {
       onWheel={handleWheel}
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
       initial={{ y: 0, scaleY: 1 }}
       exit={{
         y: '-50vh',
