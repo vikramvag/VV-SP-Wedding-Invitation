@@ -551,7 +551,7 @@ export default function App() {
                     <div className="text-center scale-95 flex flex-col items-center gap-1.5 text-[#8c7e6d]">
                       <GoldDivider className="scale-65 opacity-60" />
                       <div className="flex justify-center items-center gap-2 mt-1">
-                        <span className="text-[9px] uppercase tracking-[0.18em] text-[#8c7e6d] font-bold">Sweta &amp; Vikram</span>
+                        <span className="font-serif-lux text-sm sm:text-base text-[#8c7e6d] font-medium tracking-normal">Sweta, Vikram &amp; Both Families</span>
                       </div>
                       <span className="text-[10px] text-[#8c7e6d]/65 font-mono tracking-widest mt-1.5">— I —</span>
                     </div>
