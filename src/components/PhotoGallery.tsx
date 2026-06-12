@@ -20,7 +20,7 @@ const GALLERY_PHOTOS: GalleryPhoto[] = [
     id: "photo-1",
     src: gallery1,
     title: "The Beginning",
-    description: "The met for the first time and felt like they’ve known each other since ages",
+    description: "They met for the first time and felt like they’ve known each other since ages",
     date: "First Meeting"
   },
   {
