@@ -25,17 +25,20 @@ export const CoverPage: React.FC<CoverPageProps> = ({ onNext }) => {
 
   // Simple gold text without gradient and simple drop shadow
   const goldSolidStyle: React.CSSProperties = {
-    color: '#d4af37',
-    textShadow: '2px 2px 4px rgba(0, 0, 0, 0.24)',
+    color: '#c5a043',
+    textShadow: '0.5px 0.5px 1px rgba(255,255,255,0.6), -1px -1px 2px rgba(0,0,0,0.18)',
     fontFamily: "'Alex Brush', 'Great Vibes', 'Pinyon Script', cursive",
+    fontWeight: 400,
   };
 
   return (
     <div 
-      className="absolute inset-0 select-none overflow-hidden h-full flex flex-col justify-between p-6 xs:p-8 sm:p-10 rounded-r-lg bg-[#faf9f6] paper-texture paper-fiber"
+      onClick={onNext}
+      className="absolute inset-0 select-none overflow-hidden h-full flex flex-col justify-between p-6 xs:p-8 sm:p-10 rounded-r-lg bg-[#faf9f6] paper-texture paper-fiber cursor-pointer"
       style={{
         boxShadow: 'inset 0 0 45px rgba(140, 126, 109, 0.08), inset 12px 0 15px rgba(255, 255, 255, 0.95), inset -12px 0 15px rgba(0, 0, 0, 0.04), 4px 0 15px rgba(0, 0, 0, 0.12)',
       }}
+      title="Click or Tap anywhere to open"
     >
       {/* Page Spine overlays */}
       <div className="absolute left-0 top-0 bottom-0 w-4 left-spine-gradient pointer-events-none" />
@@ -65,7 +68,7 @@ export const CoverPage: React.FC<CoverPageProps> = ({ onNext }) => {
       {/* Top Header - Ornate invitation call */}
       <div className="text-center mt-6 xs:mt-8 z-10 scale-95 sm:scale-100">
         <span 
-          className="font-cinzel text-[10px] xs:text-xs font-bold tracking-[0.28em]"
+          className="font-cinzel text-[10px] xs:text-[11px] font-bold tracking-[0.28em]"
           style={standardTextStyle}
         >
           IN THE SACRED BOND OF HOLY MATRIMONY
@@ -102,9 +105,9 @@ export const CoverPage: React.FC<CoverPageProps> = ({ onNext }) => {
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.8, duration: 1.4 }}
-          className="text-center my-1 sm:my-2 min-h-[4.5rem] flex flex-col justify-center items-center"
+          className="text-center my-2 min-h-[4.5rem] flex flex-col justify-center items-center"
         >
-          {/* Deep gold-embossed couple names */}
+          {/* Original cursive couple names with simple drop shadow */}
           <h1 
             className="font-cursive text-6xl xs:text-7xl sm:text-8xl px-4 leading-[1.3] text-center select-none pointer-events-none tracking-wide"
             style={goldSolidStyle}
@@ -144,31 +147,16 @@ export const CoverPage: React.FC<CoverPageProps> = ({ onNext }) => {
           <p 
             className="font-serif-lux text-[10px] xs:text-xs italic mt-0.5 font-bold text-[#8c7e6d]"
           >
-            1096, McBride Ave, Mississauga, ON. L5C1M5
+            1069, McBride Avenue, Mississauga
           </p>
         </div>
 
-        {/* Action Button styled as an elegant gold-edged letterpress seal key */}
-        <motion.button
-          onClick={(e) => {
-            e.stopPropagation();
-            onNext();
-          }}
-          whileHover={{ 
-            scale: 1.04, 
-            boxShadow: '0 4px 12px rgba(140, 126, 109, 0.25)',
-            backgroundImage: 'linear-gradient(135deg, #ffffff 0%, #fafafa 100%)'
-          }}
-          whileTap={{ scale: 0.98 }}
-          className="mt-1 py-2 px-7 text-[#faf9f6] text-[10px] sm:text-[11px] uppercase tracking-[0.25em] font-bold transition-all duration-300 cursor-pointer rounded-[2px] border focus:outline-none"
-          style={{
-            backgroundImage: 'linear-gradient(135deg, #d4af37 0%, #c19a28 100%)',
-            borderColor: '#b38728',
-            boxShadow: '0 2px 6px rgba(140, 126, 109, 0.15), inset 0 1px 0 rgba(255,255,255,0.2)',
-          }}
-        >
-          Open Invitation
-        </motion.button>
+        <div className="mt-4 flex flex-col items-center gap-1 opacity-70 animate-pulse">
+          <p className="text-[#8c7e6d] font-bold text-[9px] uppercase tracking-[0.25em]">
+            Tap anywhere to enter
+          </p>
+          <div className="h-[1px] w-8 bg-[#8c7e6d]/40" />
+        </div>
       </div>
     </div>
   );

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { CoverPage } from './components/CoverPage';
 import { PhotoGallery } from './components/PhotoGallery';
+import { RoyalLanding } from './components/RoyalLanding';
 import { playFlipSound, startBackgroundMusic, isMusicPlaying } from './components/AudioEffects';
 import { ITINERARY, INITIAL_REGISTRY } from './data';
 import { DayPlan, RSVPResponse, AttendanceStatus, MealOption } from './types';
@@ -58,6 +59,7 @@ const pageVariants = {
 };
 
 export default function App() {
+  const [landingOpened, setLandingOpened] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [registry, setRegistry] = useState<RSVPResponse[]>(() => {
     try {
@@ -251,6 +253,18 @@ export default function App() {
 
   return (
     <div id="app-root" className="min-h-screen bg-[#dcd7cc] flex flex-col items-center justify-between overflow-x-hidden font-sans-lux relative py-4 px-2 sm:py-8 sm:px-4">
+      {/* 3D Paper-Cut Royal Landing Page Overlay */}
+      <AnimatePresence>
+        {!landingOpened && (
+          <RoyalLanding 
+            onOpen={() => {
+              setLandingOpened(true);
+              startBackgroundMusic();
+            }} 
+          />
+        )}
+      </AnimatePresence>
+
       {/* Absolute background patterns */}
       <div className="absolute inset-0 opacity-[0.03] select-none pointer-events-none overflow-hidden">
         <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
@@ -267,9 +281,6 @@ export default function App() {
 
       {/* Decorative Top subtle title */}
       <header className="text-center z-10 w-full mb-2 sm:mb-4 select-none">
-        <p className="text-[10px] sm:text-xs uppercase tracking-[0.35em] text-[#8c7e6d] font-bold">
-          Sweta &amp; Vikram
-        </p>
       </header>
 
       {/* Main realistic book assembly */}
@@ -372,16 +383,21 @@ export default function App() {
                     
                     {/* Header */}
                     <div className="text-center mt-3 scale-95">
-                      <span className="text-[10px] uppercase tracking-[0.25em] text-[#8c7e6d] font-bold">THE CELEBRATION</span>
+                      <span className="text-[10px] uppercase tracking-[0.25em] text-[#8c7e6d] font-bold">THE CELEBRATION OF</span>
                       <h2 className="font-cinzel text-xl text-[#4a443a] tracking-wide mt-1">Our Sacred Union</h2>
                       <div className="h-px w-8 bg-[#8c7e6d]/30 mx-auto mt-2" />
                     </div>
 
                     {/* Middle Quote */}
                     <div className="my-auto text-center px-2">
-                      {/* Round monogram line */}
+                      {/* Round monogram line with interlocking gold rings */}
                       <div className="w-16 h-16 border border-[#8c7e6d]/30 rounded-full mx-auto flex items-center justify-center mb-5 relative">
-                        <Heart className="w-6 h-6 text-[#8c7e6d]/80 fill-[#8c7e6d]/10 animate-pulse" />
+                        <svg className="w-8 h-8 text-[#8c7e6d]" viewBox="0 0 100 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <circle cx="38" cy="30" r="18" stroke="#8c7e6d" strokeWidth="4" />
+                          <circle cx="62" cy="30" r="18" stroke="#8c7e6d" strokeWidth="4" />
+                          <path d="M 50 12 A 18 18 0 0 1 56 30" stroke="#faf9f6" strokeWidth="5.5" strokeLinecap="round" />
+                          <path d="M 50 12 A 18 18 0 0 1 56 30" stroke="#8c7e6d" strokeWidth="4" strokeLinecap="round" />
+                        </svg>
                         <span className="absolute -bottom-1 text-[8px] font-mono tracking-widest bg-[#faf9f6] px-2 text-[#8c7e6d]/80">S &amp; V</span>
                       </div>
 
@@ -390,11 +406,11 @@ export default function App() {
                       </p>
 
                       <p className="font-serif-lux text-sm sm:text-base leading-relaxed text-[#4a443a]/90 space-y-3 font-medium">
-                        "Two souls, sharing a single beautiful vision. Together we take this step toward a shared tomorrow filled with faith, endless discovery, and absolute devotion."
+                        Together we take this step towards a shared tomorrow filled with joy, love, respect and absolute devotion
                       </p>
 
                       <p className="font-serif-lux text-xs sm:text-sm leading-relaxed text-[#4a443a]/80 italic mt-4 border-t border-[#eeebe3] pt-4 max-w-[280px] mx-auto">
-                        Because you have shared in our lives, our growth, and our laughter, we request the honor of your presence as we bind our souls for eternity.
+                        we request the honor of your presence as we bind our souls for eternity
                       </p>
                     </div>
 
@@ -402,7 +418,6 @@ export default function App() {
                     <div className="text-center scale-95 flex flex-col items-center gap-1.5 text-[#8c7e6d]">
                       <GoldDivider className="scale-65 opacity-60" />
                       <div className="flex justify-center items-center gap-2 mt-1">
-                        <Users2 className="w-3.5 h-3.5 text-[#8c7e6d]" />
                         <span className="text-[9px] uppercase tracking-[0.18em] text-[#8c7e6d] font-bold">Sweta &amp; Vikram</span>
                       </div>
                       <span className="text-[10px] text-[#8c7e6d]/65 font-mono tracking-widest mt-1.5">— I —</span>
@@ -453,8 +468,7 @@ export default function App() {
                   <div className="flex-1 flex flex-col pt-3 pb-2 min-h-0">
                     {/* Header */}
                     <div className="text-center mb-3">
-                      <span className="text-[10px] uppercase tracking-[0.25em] text-[#8c7e6d] font-bold">Page 01 of Ceremonies</span>
-                      <h2 className="font-cinzel text-lg text-[#4a443a]/90 tracking-widest mt-0.5">THE ITINERARY</h2>
+                      <h2 className="font-cinzel text-lg text-[#4a443a]/90 tracking-widest mt-0.5">Itinerary – Day 1</h2>
                       <div className="h-[1.5px] w-12 bg-[#8c7e6d] mx-auto mt-2" />
                     </div>
 
@@ -484,12 +498,14 @@ export default function App() {
                             <h4 className="font-serif-lux font-bold text-xs sm:text-sm text-[#4a443a] mt-1.5">{event.title}</h4>
                             <p className="text-[11px] leading-relaxed text-[#4a443a]/80 mt-1">{event.description}</p>
                             
-                            <div className="mt-2 pt-1.5 border-t border-[#faf9f6]/95 flex items-center gap-1.5">
-                              <Sparkles className="w-2.5 h-2.5 text-[#8c7e6d] opacity-80 shrink-0" />
-                              <span className="text-[9px] uppercase tracking-[0.05em] text-[#8c7e6d] font-bold truncate">
-                                Wear: <span className="font-normal text-[#4a443a]/90 font-serif-lux italic text-[10px] sm:text-[11px]">{event.dressCode}</span>
-                              </span>
-                            </div>
+                            {event.dressCode && (
+                              <div className="mt-2 pt-1.5 border-t border-[#faf9f6]/95 flex items-center gap-1.5">
+                                <Sparkles className="w-2.5 h-2.5 text-[#8c7e6d] opacity-80 shrink-0" />
+                                <span className="text-[9px] uppercase tracking-[0.05em] text-[#8c7e6d] font-bold truncate">
+                                  Wear: <span className="font-normal text-[#4a443a]/90 font-serif-lux italic text-[10px] sm:text-[11px]">{event.dressCode}</span>
+                                </span>
+                              </div>
+                            )}
                           </div>
                         ))}
                       </div>
@@ -546,8 +562,7 @@ export default function App() {
                   <div className="flex-1 flex flex-col pt-3 pb-2 min-h-0">
                     {/* Header */}
                     <div className="text-center mb-3">
-                      <span className="text-[10px] uppercase tracking-[0.25em] text-[#8c7e6d] font-bold">Page 02 of Ceremonies</span>
-                      <h2 className="font-cinzel text-lg text-[#4a443a]/90 tracking-widest mt-0.5">THE ITINERARY</h2>
+                      <h2 className="font-cinzel text-lg text-[#4a443a]/90 tracking-widest mt-0.5">Itinerary – Day 2</h2>
                       <div className="h-[1.5px] w-12 bg-[#8c7e6d] mx-auto mt-2" />
                     </div>
 
@@ -577,12 +592,14 @@ export default function App() {
                             <h4 className="font-serif-lux font-bold text-xs sm:text-sm text-[#4a443a] mt-1.5">{event.title}</h4>
                             <p className="text-[11px] leading-relaxed text-[#4a443a]/80 mt-1">{event.description}</p>
                             
-                            <div className="mt-2 pt-1.5 border-t border-[#faf9f6] flex items-center gap-1.5">
-                              <Sparkles className="w-2.5 h-2.5 text-[#8c7e6d] opacity-80 shrink-0" />
-                              <span className="text-[9px] uppercase tracking-[0.05em] text-[#8c7e6d] font-bold truncate">
-                                Wear: <span className="font-normal text-[#4a443a]/90 font-serif-lux italic text-[10px] sm:text-[11px]">{event.dressCode}</span>
-                              </span>
-                            </div>
+                            {event.dressCode && (
+                              <div className="mt-2 pt-1.5 border-t border-[#faf9f6] flex items-center gap-1.5">
+                                <Sparkles className="w-2.5 h-2.5 text-[#8c7e6d] opacity-80 shrink-0" />
+                                <span className="text-[9px] uppercase tracking-[0.05em] text-[#8c7e6d] font-bold truncate">
+                                  Wear: <span className="font-normal text-[#4a443a]/90 font-serif-lux italic text-[10px] sm:text-[11px]">{event.dressCode}</span>
+                                </span>
+                              </div>
+                            )}
                           </div>
                         ))}
                       </div>
@@ -749,7 +766,6 @@ export default function App() {
                                 className="w-full bg-white/60 px-2 py-1.5 border border-[#d1cec4] focus:border-[#8c7e6d] text-xs focus:outline-none rounded-[2px] font-sans-lux font-semibold"
                               >
                                 <option value="Attending">Attending</option>
-                                <option value="Unsure">Maybe</option>
                                 <option value="Declined">Cannot Attend</option>
                               </select>
                             </div>
@@ -763,7 +779,6 @@ export default function App() {
                               >
                                 <option value="Vegetarian">Vegetarian</option>
                                 <option value="Non-Vegetarian">Non-Veg</option>
-                                <option value="Vegan">Vegan</option>
                               </select>
                             </div>
                           </div>
@@ -813,25 +828,9 @@ export default function App() {
       </main>
 
       {/* Ornate custom footer with navigation controls and dots */}
-      <footer className="w-full max-w-[430px] flex flex-col items-center gap-3 mt-4 select-none z-10 scale-95">
+      <footer className="w-full max-w-[430px] flex flex-col items-center select-none z-10 scale-95 mt-3">
         
-        {/* Bullets indicator */}
-        <div className="flex items-center gap-2">
-          {Array.from({ length: totalPages }).map((_, index) => (
-            <button
-              key={index}
-              onClick={() => handlePageClick(index)}
-              className={`h-2.5 transition-all duration-300 rounded-full cursor-pointer focus:outline-none ${
-                currentPage === index 
-                  ? 'w-7 bg-[#4a443a] ring-1 ring-[#8c7e6d]' 
-                  : 'w-2.5 bg-[#8c7e6d]/40 hover:bg-[#8c7e6d]/70'
-              }`}
-              title={`Flip to Page ${index + 1}`}
-            />
-          ))}
-        </div>
-
-        {/* Previous and Next Navigation keys layout */}
+        {/* Navigation keys and bullets layout on a single line */}
         <div className="w-full flex items-center justify-between border-t border-[#eeebe3]/80 pt-3 px-1.5 text-xs text-[#4a443a]">
           
           <button 
@@ -843,9 +842,21 @@ export default function App() {
             Previous
           </button>
 
-          <span className="font-mono text-[10px] font-bold tracking-[0.1em] text-[#8c7e6d]">
-            PAGE {currentPage + 1} OF {totalPages}
-          </span>
+          {/* Bullets indicator in the center */}
+          <div className="flex items-center gap-2">
+            {Array.from({ length: totalPages }).map((_, index) => (
+              <button
+                key={index}
+                onClick={() => handlePageClick(index)}
+                className={`h-2.5 transition-all duration-300 rounded-full cursor-pointer focus:outline-none ${
+                  currentPage === index 
+                    ? 'w-7 bg-[#4a443a] ring-1 ring-[#8c7e6d]' 
+                    : 'w-2.5 bg-[#8c7e6d]/40 hover:bg-[#8c7e6d]/70'
+                }`}
+                title={`Flip to Page ${index + 1}`}
+              />
+            ))}
+          </div>
 
           <button 
             onClick={handleNext}

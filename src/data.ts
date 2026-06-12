@@ -8,50 +8,38 @@ export const ITINERARY: DayPlan[] = [
     events: [
       {
         id: "d1-1",
-        time: "10:30 AM",
-        title: "Ganesh Puja & Shagun",
-        description: "An auspicious commencement seeking universal blessings, followed by traditional henna mehendi applications for the family.",
-        dressCode: "Festive Yellow, Ochre, or Vibrant Citrus Colors",
-        location: "The Golden Leaf Courtyard"
+        time: "10:00 AM",
+        title: "Ganesh Pooja & Haldi Ceremony",
+        description: "A joyous pre-wedding ritual that symbolizes spiritual purification, protection from negative energies, and the blessing of prosperity before they begin their new married life",
+        location: "1069, McBride Avenue, Mississauga"
       },
       {
         id: "d1-2",
-        time: "06:30 PM",
-        title: "Sangeet Night & Ring Exchange",
-        description: "A spectacular night of synchronized dances, dynamic folk songs, and the official ring exchange. Dinner and drinks will be served.",
-        dressCode: "Glimmering Lehengas, Sherwanis, or Evening Tuxedos",
-        location: "The Imperial Ballroom Star-deck"
+        time: "01:00 PM",
+        title: "Mehendi & Shagun",
+        description: "A sacred pre-wedding ritual symbolizing prosperity, good fortune, strengthening of marital bonds & lifelong devotion between the couple",
+        location: "1069, McBride Avenue, Mississauga"
       }
     ]
   },
   {
     dayNumber: 2,
     date: "Sunday, August 9, 2026",
-    subtitle: "The Main Royal Wedding Day",
+    subtitle: "The one where they get married",
     events: [
       {
         id: "d2-1",
-        time: "09:30 AM",
-        title: "Baraat Procession & Milni",
-        description: "Join Vikram's jubilant royal horse caravan at the gate, followed by a warm reception and garland exchange by Sweta's loving family.",
-        dressCode: "Classic Royal Sherwani, Bandhgala, or Elegant Suits",
-        location: "The Palace Entrance Gardens"
+        time: "04:00 PM",
+        title: "Wedding Ceremony",
+        description: "Witness the joyful union of Sweta & Vikram as they exchange garlands and complete the sacred Saptapadi. Surrounded by family to witness their first steps as husband and wife.",
+        location: "1069, McBride Avenue, Mississauga"
       },
       {
         id: "d2-2",
-        time: "11:30 AM",
-        title: "Sacred Phere (Vows)",
-        description: "Under a Mandap of white orchids, Sweta & Vikram will walk the sacred seven circles around the fire, binding their souls for seven lifetimes.",
-        dressCode: "Traditional Indian Silk, Red, Gold, or Peach Traditional Wear",
-        location: "The Lotus Pavilion Mandap"
-      },
-      {
-        id: "d2-3",
-        time: "07:00 PM",
-        title: "Grand Banquet Reception",
-        description: "Celebrate the newlywed union with a gourmet gala buffet, heartfelt toasts, bridal waltzes, and dancing under the golden crystal chandeliers.",
-        dressCode: "Formal Indian Royale or Black Tie Formal wear",
-        location: "The Grand Royal Crystal Palace"
+        time: "05:30 PM",
+        title: "Fun and Games",
+        description: "Let the friendly rivalry begin! Join us for a lively afternoon of traditional wedding games, laughter, and lighthearted competition as family & friends battle it out for bragging rights.",
+        location: "1069, McBride Avenue, Mississauga"
       }
     ]
   }
@@ -81,7 +69,7 @@ export const INITIAL_REGISTRY: RSVPResponse[] = [
     guestName: "Anjali & Kabir Sen",
     phoneOrEmail: "anjali26@example.com",
     attendance: "Attending",
-    mealPreference: "Vegan",
+    mealPreference: "Vegetarian",
     blessing: "An incredible couple. Wishing you a lifetimes of deep laughs, stunning adventures, and delicious dinners. Can't wait to celebrate on August 9th!",
     submittedAt: "2026-06-10T12:05:00Z"
   }

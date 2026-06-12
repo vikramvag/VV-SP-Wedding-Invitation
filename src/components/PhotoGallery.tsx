@@ -6,7 +6,6 @@ interface GalleryPhoto {
   id: string;
   src: string;
   title: string;
-  category: 'Engagement' | 'Casual';
   description: string;
   date: string;
 }
@@ -14,46 +13,37 @@ interface GalleryPhoto {
 const GALLERY_PHOTOS: GalleryPhoto[] = [
   {
     id: "photo-1",
-    src: "/src/assets/images/engagement_garden_1781192694348.jpg",
-    title: "Golden Hour Promises",
-    category: "Engagement",
-    description: "Wrapped in the warm embrace of Mississauga's golden sun, anticipating a lifetime of laughter.",
-    date: "Aug 2025"
+    src: "/src/assets/images/Gallery-1.jpg",
+    title: "The Beginning",
+    description: "The met for the first time and felt like they’ve known each other since ages",
+    date: "First Meeting"
   },
   {
     id: "photo-2",
-    src: "/src/assets/images/engagement_antique_1781192718235.jpg",
-    title: "Terracotta Tones",
-    category: "Engagement",
-    description: "Matching the rich heritage of Mississauga with modern elegance and grace.",
-    date: "Sep 2025"
+    src: "/src/assets/images/Gallery-2.jpg",
+    title: "She Said Yes",
+    description: "This is a dramatic recreation of the moment but IYKYK :P",
+    date: "The Proposal"
   },
   {
     id: "photo-3",
-    src: "/src/assets/images/casual_cafe_1781192706282.jpg",
-    title: "Chai & Conversations",
-    category: "Casual",
-    description: "Our happiest moments aren't planned — they're found over steaming cups of sweet spiced tea.",
-    date: "Nov 2025"
+    src: "/src/assets/images/Gallery-3.jpg",
+    title: "Rings Exchanged",
+    description: "Engaged on March 14th, dreamed of living together forever",
+    date: "March 14"
   },
   {
     id: "photo-4",
-    src: "/src/assets/images/casual_sunset_1781192732293.jpg",
-    title: "Chasing Sunsets",
-    category: "Casual",
-    description: "Walking hand-in-hand where the land meets the sea, ready for every horizon together.",
-    date: "Jan 2026"
+    src: "/src/assets/images/Gallery-4.jpg",
+    title: "Love is Blossoming",
+    description: "Chasing flowers and clouds. Calm, content and holding hands till eternity",
+    date: "Blossoming Love"
   }
 ];
 
 export const PhotoGallery: React.FC = () => {
-  const [activeFilter, setActiveFilter] = useState<'All' | 'Engagement' | 'Casual'>('All');
   const [selectedPhoto, setSelectedPhoto] = useState<GalleryPhoto | null>(null);
   const [likes, setLikes] = useState<{ [key: string]: boolean }>({});
-
-  const filteredPhotos = GALLERY_PHOTOS.filter(
-    (photo) => activeFilter === 'All' || photo.category === activeFilter
-  );
 
   const toggleLike = (e: React.MouseEvent, id: string) => {
     e.stopPropagation();
@@ -65,32 +55,15 @@ export const PhotoGallery: React.FC = () => {
       {/* Header */}
       <div className="text-center mb-2.5 shrink-0">
         <span className="text-[10px] uppercase tracking-[0.25em] text-[#8c7e6d] font-bold">Captured Moments</span>
-        <h2 className="font-cinzel text-lg text-[#4a443a]/90 tracking-widest mt-0.5">OUR GALLERY</h2>
+        <h2 className="font-cinzel text-lg text-[#4a443a]/90 tracking-widest mt-0.5">OUR STORY</h2>
         <div className="h-[1.5px] w-12 bg-[#8c7e6d] mx-auto mt-2" />
-      </div>
-
-      {/* Filter Chips */}
-      <div className="flex justify-center items-center gap-1.5 mb-3 xs:mb-4 select-none shrink-0">
-        {(['All', 'Engagement', 'Casual'] as const).map((filter) => (
-          <button
-            key={filter}
-            onClick={() => setActiveFilter(filter)}
-            className={`px-3 py-1 text-[9px] uppercase tracking-wider font-bold rounded-full transition-all duration-300 cursor-pointer ${
-              activeFilter === filter
-                ? 'bg-[#4a443a] text-[#faf9f6] shadow-sm'
-                : 'bg-[#eeebe3]/60 text-[#8c7e6d] hover:bg-[#eeebe3]'
-            }`}
-          >
-            {filter}
-          </button>
-        ))}
       </div>
 
       {/* Photo Grid Grid */}
       <div className="flex-1 min-h-0 overflow-y-auto pr-1 select-none">
         <div className="grid grid-cols-2 gap-3 pb-2">
           <AnimatePresence mode="popLayout">
-            {filteredPhotos.map((photo) => {
+            {GALLERY_PHOTOS.map((photo) => {
               const isLiked = !!likes[photo.id];
               return (
                 <motion.div
@@ -118,11 +91,6 @@ export const PhotoGallery: React.FC = () => {
                         <Eye className="w-4 h-4 text-[#8c7e6d]" />
                       </div>
                     </div>
-
-                    {/* Cute Categories Sticker */}
-                    <span className="absolute top-1 right-1 px-1 py-0.5 bg-[#faf9f6]/90 border border-[#8c7e6d]/20 text-[7px] uppercase tracking-wider font-bold text-[#8c7e6d] rounded-[2px] pointer-events-none">
-                      {photo.category}
-                    </span>
                   </div>
 
                   {/* Title & Info */}
@@ -170,7 +138,7 @@ export const PhotoGallery: React.FC = () => {
             {/* Close Button & Header */}
             <div className="flex justify-between items-center w-full text-white/80 z-10 p-2">
               <span className="font-cinzel tracking-[0.15em] text-xs font-semibold text-amber-200">
-                {selectedPhoto.category} Portfolio
+                Our Love Story
               </span>
               <button
                 onClick={() => setSelectedPhoto(null)}
@@ -208,7 +176,7 @@ export const PhotoGallery: React.FC = () => {
                         {selectedPhoto.title}
                       </h3>
                       <p className="text-[9px] font-mono text-[#8c7e6d]">
-                        {selectedPhoto.date} &bull; {selectedPhoto.category} Session
+                        {selectedPhoto.date}
                       </p>
                     </div>
                     
