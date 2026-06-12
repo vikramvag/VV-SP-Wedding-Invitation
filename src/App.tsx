@@ -89,34 +89,19 @@ export default function App() {
 
   // Google Form Option 2 Integration State
   const [googleFormSettings] = useState(() => {
-    try {
-      const saved = localStorage.getItem('vikram_sewta_google_form_settings');
-      return saved ? JSON.parse(saved) : {
-        syncEnabled: true,
-        googleFormUrl: '',
-        entryMappings: {
-          guestName: 'entry.582490159',
-          phoneOrEmail: 'entry.420658514',
-          guestCount: 'entry.492582103',
-          attendance: 'entry.159250493',
-          mealPreference: 'entry.105928351',
-          blessing: 'entry.920581938'
-        }
-      };
-    } catch {
-      return {
-        syncEnabled: true,
-        googleFormUrl: '',
-        entryMappings: {
-          guestName: 'entry.582490159',
-          phoneOrEmail: 'entry.420658514',
-          guestCount: 'entry.492582103',
-          attendance: 'entry.159250493',
-          mealPreference: 'entry.105928351',
-          blessing: 'entry.920581938'
-        }
-      };
-    }
+    // Standard default settings matching the live Google Form
+    return {
+      syncEnabled: true,
+      googleFormUrl: 'https://docs.google.com/forms/d/e/1FAIpQLScQfS8O_CmAv3lgB4gk6lZ4XmaYyx9ndcTvyyWCGpzovziGMw/formResponse',
+      entryMappings: {
+        guestName: 'entry.2606285',
+        phoneOrEmail: 'entry.189358799',
+        guestCount: 'entry.990413505',
+        attendance: 'entry.877086558',
+        mealPreference: 'entry.652415042',
+        blessing: 'entry.247956668'
+      }
+    };
   });
 
   // Helper to submit to Google Forms
@@ -142,10 +127,17 @@ export default function App() {
     const formData = new URLSearchParams();
     const mappings = settings.entryMappings;
     
+    // Exact mapping matches Google Form parameter names
     if (mappings.guestName) formData.append(mappings.guestName, rsvp.guestName);
     if (mappings.phoneOrEmail) formData.append(mappings.phoneOrEmail, rsvp.phoneOrEmail);
     if (mappings.guestCount) formData.append(mappings.guestCount, String(rsvp.guestCount));
-    if (mappings.attendance) formData.append(mappings.attendance, rsvp.attendance);
+    
+    // Map Declined to the actual option value "Cannot Attend" defined in the form list fields
+    if (mappings.attendance) {
+      const formAttendance = rsvp.attendance === 'Declined' ? 'Cannot Attend' : 'Attending';
+      formData.append(mappings.attendance, formAttendance);
+    }
+    
     if (mappings.mealPreference) formData.append(mappings.mealPreference, rsvp.mealPreference);
     if (mappings.blessing) formData.append(mappings.blessing, rsvp.blessing);
 
