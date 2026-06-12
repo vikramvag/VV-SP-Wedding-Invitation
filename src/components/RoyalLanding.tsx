@@ -190,9 +190,6 @@ export const RoyalLanding: React.FC<RoyalLandingProps> = ({ onOpen }) => {
             <span>Tap or Scroll to Enter</span>
             <Heart className="w-3 h-3 fill-current animate-pulse text-[#e2c175]" />
           </div>
-          <p className="text-[10px] sm:text-[11px] font-medium leading-relaxed italic text-[#faf9f6]/60">
-            Unravel our joy as we open the sacred pages of our invitation
-          </p>
           {/* Micro-animating entry cursor indicator line */}
           <div className="h-5 w-[1.5px] bg-gradient-to-b from-[#e2c175] to-transparent mt-1 animate-bounce" />
         </motion.div>
