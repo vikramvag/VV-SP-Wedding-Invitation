@@ -7,7 +7,20 @@
  */
 
 let audioPlayer: HTMLAudioElement | null = null;
-let isPlaying = false;
+
+// Eagerly initialize and preload the audio element to maximize compatibility with mobile browsers (Android and iOS)
+if (typeof window !== 'undefined') {
+  try {
+    audioPlayer = new Audio('/background.mp3');
+    audioPlayer.loop = true;
+    audioPlayer.volume = 0.65;
+    audioPlayer.preload = 'auto';
+    audioPlayer.load();
+    console.log("Audio player eagerly initialized and preloading background.mp3");
+  } catch (e) {
+    console.warn("Could not eagerly initialize audio player:", e);
+  }
+}
 
 export function playFlipSound() {
   // Disabled as per user request to disable all other/interaction sounds
@@ -17,14 +30,21 @@ export function playFlipSound() {
  * Primary trigger to launch background MP3 music
  */
 export function startBackgroundMusic() {
-  if (isPlaying) return;
-  isPlaying = true;
+  // If already playing, do nothing
+  if (audioPlayer && !audioPlayer.paused) {
+    return;
+  }
 
   if (!audioPlayer) {
-    // Primary path is /background.mp3
-    audioPlayer = new Audio('/background.mp3');
-    audioPlayer.loop = true;
-    audioPlayer.volume = 0.65;
+    try {
+      audioPlayer = new Audio('/background.mp3');
+      audioPlayer.loop = true;
+      audioPlayer.volume = 0.65;
+      audioPlayer.preload = 'auto';
+    } catch (e) {
+      console.error("Failed to create Audio instance:", e);
+      return;
+    }
   }
 
   audioPlayer.play().then(() => {
@@ -46,23 +66,28 @@ export function startBackgroundMusic() {
 
     let currentIndex = 0;
     const tryNextPath = () => {
-      if (!isPlaying) return;
       if (currentIndex >= alternativePaths.length) {
         console.warn("Please upload an MP3 file named 'background.mp3' to the root directory to play background music.");
         return;
       }
       
       const path = alternativePaths[currentIndex++];
-      audioPlayer = new Audio(path);
-      audioPlayer.loop = true;
-      audioPlayer.volume = 0.65;
-      
-      audioPlayer.play().then(() => {
-        console.log(`Successfully playing background music from path: ${path}`);
-      }).catch((e) => {
-        console.debug(`Path ${path} failed to play:`, e);
+      try {
+        audioPlayer = new Audio(path);
+        audioPlayer.loop = true;
+        audioPlayer.volume = 0.65;
+        audioPlayer.preload = 'auto';
+        
+        audioPlayer.play().then(() => {
+          console.log(`Successfully playing background music from path: ${path}`);
+        }).catch((e) => {
+          console.debug(`Path ${path} failed to play:`, e);
+          tryNextPath();
+        });
+      } catch (err) {
+        console.debug(`Error creating audio for path ${path}:`, err);
         tryNextPath();
-      });
+      }
     };
 
     tryNextPath();
@@ -73,7 +98,6 @@ export function startBackgroundMusic() {
  * Pause background music
  */
 export function stopBackgroundMusic() {
-  isPlaying = false;
   if (audioPlayer) {
     try {
       audioPlayer.pause();
@@ -87,5 +111,5 @@ export function stopBackgroundMusic() {
  * Query check for playing playback state
  */
 export function isMusicPlaying(): boolean {
-  return isPlaying && audioPlayer ? !audioPlayer.paused : false;
+  return audioPlayer ? !audioPlayer.paused : false;
 }
