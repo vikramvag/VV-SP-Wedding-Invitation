@@ -125,8 +125,35 @@ export default function App() {
     }
 
     const mappings = settings.entryMappings;
+
+    // Approach 1: Modern background Fetch style using mode: 'no-cors' - highly robust with modern standard headers
+    const formData = new URLSearchParams();
+    if (mappings.guestName) formData.append(mappings.guestName, rsvp.guestName);
+    if (mappings.phoneOrEmail) formData.append(mappings.phoneOrEmail, rsvp.phoneOrEmail);
+    if (mappings.guestCount) formData.append(mappings.guestCount, String(rsvp.guestCount));
     
-    // Create dynamically a temporary form targeting the hidden iframe
+    if (mappings.attendance) {
+      const formAttendance = rsvp.attendance === 'Declined' ? 'Cannot Attend' : 'Attending';
+      formData.append(mappings.attendance, formAttendance);
+    }
+    
+    if (mappings.mealPreference) formData.append(mappings.mealPreference, rsvp.mealPreference);
+    if (mappings.blessing) formData.append(mappings.blessing, rsvp.blessing);
+
+    fetch(responseUrl, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: formData,
+    }).then(() => {
+      console.log('Background Fetch subresource post to Google Form succeeded.');
+    }).catch(err => {
+      console.warn('Background Fetch subresource post failed, relying fully on Iframe submission:', err);
+    });
+
+    // Approach 2: Classic Programmatic layout form submitted targeting hidden frame
     const tempForm = document.createElement('form');
     tempForm.method = 'POST';
     tempForm.action = responseUrl;
@@ -157,11 +184,10 @@ export default function App() {
     document.body.appendChild(tempForm);
     try {
       tempForm.submit();
-      console.log('Programmatic form response submitted to hidden iframe successfully.');
+      console.log('Programmatic fallback form submitted successfully.');
     } catch (err) {
-      console.error('Error submitting form to hidden iframe:', err);
+      console.error('Error submitting fallback form to iframe:', err);
     } finally {
-      // Remove the form after a short delay
       setTimeout(() => {
         if (tempForm.parentNode) {
           tempForm.parentNode.removeChild(tempForm);
@@ -662,31 +688,56 @@ export default function App() {
 
                         {/* Events listed */}
                         <div className="space-y-2">
-                          {ITINERARY[1].events.map((event) => (
-                            <div key={event.id} className="p-2.5 bg-white/70 rounded border border-[#eeebe3] hover:border-[#8c7e6d]/30 transition-all shadow-sm">
-                              <div className="flex justify-between items-center gap-1">
-                                <span className="inline-block px-1.5 py-0.5 bg-[#4a443a] text-[#faf9f6] text-[8px] font-mono tracking-wider font-semibold rounded-[2px] shrink-0">
-                                  {event.time}
-                                </span>
-                                <span className="text-[9px] text-[#8c7e6d] font-semibold flex items-center gap-1 max-w-[65%] truncate">
-                                  <MapPin className="w-2.5 h-2.5 shrink-0" />
-                                  <span className="truncate">{event.location}</span>
-                                </span>
-                              </div>
-                              
-                              <h4 className="font-serif-lux font-bold text-xs sm:text-sm text-[#4a443a] mt-1.5">{event.title}</h4>
-                              <p className="text-[10px] leading-relaxed text-[#4a443a]/80 mt-1">{event.description}</p>
-                              
-                              {event.dressCode && (
-                                <div className="mt-2 pt-1.5 border-t border-[#faf9f6] flex items-center gap-1.5">
-                                  <Sparkles className="w-2.5 h-2.5 text-[#8c7e6d] opacity-80 shrink-0" />
-                                  <span className="text-[9px] uppercase tracking-[0.05em] text-[#8c7e6d] font-bold truncate">
-                                    Wear: <span className="font-normal text-[#4a443a]/90 font-serif-lux italic text-[10px] sm:text-[11px]">{event.dressCode}</span>
+                          {ITINERARY[1].events.map((event) => {
+                            const isMainEvent = event.id === 'd2-1';
+                            return (
+                              <div 
+                                key={event.id} 
+                                className={`p-3 rounded transition-all relative overflow-hidden ${
+                                  isMainEvent 
+                                    ? 'bg-gradient-to-br from-[#fbf8f3] via-amber-50/40 to-white/90 border-2 border-[#8c7e6d] shadow-md hover:shadow-lg' 
+                                    : 'bg-white/70 border border-[#eeebe3] hover:border-[#8c7e6d]/30 shadow-sm'
+                                }`}
+                              >
+                                {/* Elegant gold bar on top of card for the main event */}
+                                {isMainEvent && (
+                                  <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#e2c175] via-[#8c7e6d] to-[#e2c175]" />
+                                )}
+                                
+                                <div className="flex justify-between items-center gap-1">
+                                  <div className="flex items-center gap-1.5">
+                                    <span className={`inline-block px-1.5 py-0.5 text-[8px] font-mono tracking-wider font-semibold rounded-[2px] shrink-0 ${isMainEvent ? 'bg-[#8c7e6d] text-white' : 'bg-[#4a443a] text-[#faf9f6]'}`}>
+                                      {event.time}
+                                    </span>
+                                    {isMainEvent && (
+                                      <span className="inline-block px-1.5 py-0.5 bg-[#8c7e6d]/20 text-[#8c7e6d] text-[8px] font-cinzel tracking-widest font-bold rounded-[2px] shrink-0 uppercase">
+                                        MAIN EVENT
+                                      </span>
+                                    )}
+                                  </div>
+                                  <span className="text-[9px] text-[#8c7e6d] font-semibold flex items-center gap-1 max-w-[65%] truncate">
+                                    <MapPin className="w-2.5 h-2.5 shrink-0" />
+                                    <span className="truncate">{event.location}</span>
                                   </span>
                                 </div>
-                              )}
-                            </div>
-                          ))}
+                                
+                                <h4 className={`font-serif-lux font-bold text-[#4a443a] mt-1.5 flex items-center gap-1.5 ${isMainEvent ? 'text-sm sm:text-base text-[#4a443a] font-semibold' : 'text-xs sm:text-sm'}`}>
+                                  {event.title}
+                                  {isMainEvent && <Sparkles className="w-3.5 h-3.5 text-[#e2c175] animate-pulse" />}
+                                </h4>
+                                <p className="text-[10px] leading-relaxed text-[#4a443a]/80 mt-1">{event.description}</p>
+                                
+                                {event.dressCode && (
+                                  <div className="mt-2 pt-1.5 border-t border-[#faf9f6] flex items-center gap-1.5">
+                                    <Sparkles className="w-2.5 h-2.5 text-[#8c7e6d] opacity-80 shrink-0" />
+                                    <span className="text-[9px] uppercase tracking-[0.05em] text-[#8c7e6d] font-bold truncate">
+                                      Wear: <span className="font-normal text-[#4a443a]/90 font-serif-lux italic text-[10px] sm:text-[11px]">{event.dressCode}</span>
+                                    </span>
+                                  </div>
+                                )}
+                              </div>
+                            );
+                          })}
                         </div>
                       </div>
 
