@@ -126,34 +126,7 @@ export default function App() {
 
     const mappings = settings.entryMappings;
 
-    // Approach 1: Modern background Fetch style using mode: 'no-cors' - highly robust with modern standard headers
-    const formData = new URLSearchParams();
-    if (mappings.guestName) formData.append(mappings.guestName, rsvp.guestName);
-    if (mappings.phoneOrEmail) formData.append(mappings.phoneOrEmail, rsvp.phoneOrEmail);
-    if (mappings.guestCount) formData.append(mappings.guestCount, String(rsvp.guestCount));
-    
-    if (mappings.attendance) {
-      const formAttendance = rsvp.attendance === 'Declined' ? 'Cannot Attend' : 'Attending';
-      formData.append(mappings.attendance, formAttendance);
-    }
-    
-    if (mappings.mealPreference) formData.append(mappings.mealPreference, rsvp.mealPreference);
-    if (mappings.blessing) formData.append(mappings.blessing, rsvp.blessing);
-
-    fetch(responseUrl, {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body: formData,
-    }).then(() => {
-      console.log('Background Fetch subresource post to Google Form succeeded.');
-    }).catch(err => {
-      console.warn('Background Fetch subresource post failed, relying fully on Iframe submission:', err);
-    });
-
-    // Approach 2: Classic Programmatic layout form submitted targeting hidden frame
+    // Reliable Programmatic form targeting the hidden iframe to prevent CORS errors and avoid duplicate submissions
     const tempForm = document.createElement('form');
     tempForm.method = 'POST';
     tempForm.action = responseUrl;
