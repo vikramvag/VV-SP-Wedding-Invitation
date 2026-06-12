@@ -84,6 +84,21 @@ export default function App() {
   const [blessing, setBlessing] = useState('');
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  
+  // RSVP Deadline: June 21, 2026 at 12:00 PM EST (EDT is UTC-4 in June)
+  const RSVP_DEADLINE = React.useMemo(() => new Date('2026-06-21T12:00:00-04:00'), []);
+  const [isRSVPClosedGlobally, setIsRSVPClosedGlobally] = useState<boolean>(() => {
+    return Date.now() >= RSVP_DEADLINE.getTime();
+  });
+
+  // Periodically update the real-time closed status
+  useEffect(() => {
+    const checkTimer = setInterval(() => {
+      setIsRSVPClosedGlobally(Date.now() >= RSVP_DEADLINE.getTime());
+    }, 10000); // check every 10 seconds
+    return () => clearInterval(checkTimer);
+  }, [RSVP_DEADLINE]);
+
   const totalPages = 5;
   const [musicPlaying, setMusicPlaying] = useState(false);
 
@@ -770,11 +785,53 @@ export default function App() {
                       <div className="h-[1.5px] w-12 bg-[#8c7e6d] mx-auto mt-1" />
                     </div>
 
-                    {/* RSVP Form body */}
+                    {/* RSVP Form or Polite RSVP Closed screen body */}
                     <div className="flex-1 min-h-0 overflow-y-auto pr-1 flex flex-col justify-start py-0.5">
-                      {formSubmitted ? (
+                      {isRSVPClosedGlobally ? (
+                        <motion.div
+                          initial={{ opacity: 0, scale: 0.98 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          transition={{ duration: 0.55, ease: [0.25, 1, 0.5, 1] }}
+                          className="text-center py-6 px-4 bg-white/70 rounded-[2px] border border-[#eeebe3] flex flex-col items-center justify-center my-auto gap-4 shadow-sm relative overflow-hidden"
+                        >
+                          {/* Inner gold frame */}
+                          <div className="absolute inset-1.5 border border-[#8c7e6d]/15 pointer-events-none rounded-[1px]" />
+                          
+                          {/* Top ornate symbol */}
+                          <div className="w-14 h-14 border border-[#8c7e6d]/25 rounded-full flex items-center justify-center relative bg-[#faf9f6] shrink-0">
+                            <Calendar className="w-6 h-6 text-[#8c7e6d]" />
+                            <div className="absolute right-0 bottom-0 bg-[#8c7e6d] text-[#faf9f6] w-5 h-5 rounded-full border border-[#faf9f6] flex items-center justify-center text-[9px] font-bold font-mono">
+                              ✓
+                            </div>
+                          </div>
+
+                          <div className="space-y-3 z-10 px-1">
+                            <span className="text-[9px] uppercase tracking-[0.2em] text-[#8c7e6d] font-bold">Responses Completed</span>
+                            <h3 className="font-serif-lux font-semibold text-sm sm:text-base text-[#4a443a] tracking-tight">RSVP Window Has Closed</h3>
+                            <div className="h-[1px] w-8 bg-[#8c7e6d]/30 mx-auto" />
+                            
+                            <p className="font-serif-lux text-xs leading-relaxed text-[#4a443a]/90 font-medium">
+                              Dearest Guests,<br />
+                              The online RSVP period for our wedding celebration has now closed as of <span className="font-semibold text-[#8c7e6d]">June 21, 2026 at 12:00 PM EST</span>.
+                            </p>
+                            
+                            <p className="font-serif-lux text-[11px] leading-relaxed text-[#4a443a]/75 italic bg-[#8c7e6d]/5 p-2 px-3 rounded-[2px] border border-[#8c7e6d]/10 max-w-[280px] mx-auto">
+                              If you still need to submit, adjust or verify any response details, please contact <span className="font-semibold text-[#4a443a]">Sweta, Vikram</span> or our family directly.
+                            </p>
+                          </div>
+
+                          <div className="text-center pt-2 select-none z-10 shrink-0">
+                            <span className="font-cursive text-2xl sm:text-3xl text-[#8c7e6d] leading-none block">
+                              With love &amp; anticipation,
+                            </span>
+                            <span className="font-cinzel text-[10px] tracking-widest text-[#4a443a]/80 font-bold block mt-1">
+                              Sweta &amp; Vikram
+                            </span>
+                          </div>
+                        </motion.div>
+                      ) : formSubmitted ? (
                         <motion.div 
-                           initial={{ scale: 0.95, opacity: 0 }}
+                          initial={{ scale: 0.95, opacity: 0 }}
                           animate={{ scale: 1, opacity: 1 }}
                           className="text-center py-6 px-4 bg-white/75 rounded border border-[#eeebe3] flex flex-col items-center gap-3 shadow-md"
                         >
@@ -894,7 +951,11 @@ export default function App() {
                     </div>
 
                     <div className="text-center mt-2 flex flex-col items-center gap-1">
-                      <p className="text-[10px] uppercase tracking-[0.15em] text-[#8c7e6d] font-bold animate-pulse">Respond by 20th June</p>
+                      {isRSVPClosedGlobally ? (
+                        <p className="text-[10px] uppercase tracking-[0.15em] text-[#8c7e6d]/80 font-bold">RSVP Window Closed</p>
+                      ) : (
+                        <p className="text-[10px] uppercase tracking-[0.15em] text-[#8c7e6d] font-bold animate-pulse">Respond by 20th June</p>
+                      )}
                       <span className="text-[9px] text-[#8c7e6d] font-mono">Next Page &bull; Photo Gallery</span>
                       <span className="text-[10px] text-[#8c7e6d]/65 font-mono tracking-widest">— III —</span>
                     </div>
