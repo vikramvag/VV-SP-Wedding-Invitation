@@ -87,6 +87,84 @@ export default function App() {
   const totalPages = 5;
   const [musicPlaying, setMusicPlaying] = useState(false);
 
+  // Google Form Option 2 Integration State
+  const [googleFormSettings] = useState(() => {
+    try {
+      const saved = localStorage.getItem('vikram_sewta_google_form_settings');
+      return saved ? JSON.parse(saved) : {
+        syncEnabled: true,
+        googleFormUrl: '',
+        entryMappings: {
+          guestName: 'entry.582490159',
+          phoneOrEmail: 'entry.420658514',
+          guestCount: 'entry.492582103',
+          attendance: 'entry.159250493',
+          mealPreference: 'entry.105928351',
+          blessing: 'entry.920581938'
+        }
+      };
+    } catch {
+      return {
+        syncEnabled: true,
+        googleFormUrl: '',
+        entryMappings: {
+          guestName: 'entry.582490159',
+          phoneOrEmail: 'entry.420658514',
+          guestCount: 'entry.492582103',
+          attendance: 'entry.159250493',
+          mealPreference: 'entry.105928351',
+          blessing: 'entry.920581938'
+        }
+      };
+    }
+  });
+
+  // Helper to submit to Google Forms
+  const submitToGoogleFormLocal = async (rsvp: RSVPResponse, settings: any) => {
+    if (!settings?.googleFormUrl) return { success: false, message: 'Google Form URL is empty' };
+    
+    let responseUrl = settings.googleFormUrl.trim();
+    try {
+      const urlObj = new URL(responseUrl);
+      if (urlObj.pathname.endsWith('/viewform')) {
+        urlObj.pathname = urlObj.pathname.replace('/viewform', '/formResponse');
+      } else if (!urlObj.pathname.endsWith('/formResponse')) {
+        urlObj.pathname = urlObj.pathname.replace(/\/?$/, '/formResponse');
+      }
+      urlObj.search = '';
+      responseUrl = urlObj.toString();
+    } catch (e) {
+      if (responseUrl.includes('/viewform')) {
+        responseUrl = responseUrl.replace('/viewform', '/formResponse');
+      }
+    }
+
+    const formData = new URLSearchParams();
+    const mappings = settings.entryMappings;
+    
+    if (mappings.guestName) formData.append(mappings.guestName, rsvp.guestName);
+    if (mappings.phoneOrEmail) formData.append(mappings.phoneOrEmail, rsvp.phoneOrEmail);
+    if (mappings.guestCount) formData.append(mappings.guestCount, String(rsvp.guestCount));
+    if (mappings.attendance) formData.append(mappings.attendance, rsvp.attendance);
+    if (mappings.mealPreference) formData.append(mappings.mealPreference, rsvp.mealPreference);
+    if (mappings.blessing) formData.append(mappings.blessing, rsvp.blessing);
+
+    try {
+      await fetch(responseUrl, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: formData,
+      });
+      return { success: true, message: 'Success' };
+    } catch (err: any) {
+      console.error('Error in background sync:', err);
+      return { success: false, message: err.message || 'Network error' };
+    }
+  };
+
   // Poll actual HTML5 audio state periodically to keep React UI controls perfectly in sync
   useEffect(() => {
     if (!landingOpened) return;
@@ -266,6 +344,11 @@ export default function App() {
 
     setRegistry((prev) => [newRsvp, ...prev]);
     setFormSubmitted(true);
+
+    // Live Sync to Google Sheets (Option 2) if configured
+    if (googleFormSettings.googleFormUrl) {
+      submitToGoogleFormLocal(newRsvp, googleFormSettings);
+    }
 
     // Reset form fields
     setGuestName('');
