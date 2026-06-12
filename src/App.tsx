@@ -105,8 +105,8 @@ export default function App() {
   });
 
   // Helper to submit to Google Forms
-  const submitToGoogleFormLocal = async (rsvp: RSVPResponse, settings: any) => {
-    if (!settings?.googleFormUrl) return { success: false, message: 'Google Form URL is empty' };
+  const submitToGoogleFormLocal = (rsvp: RSVPResponse, settings: any) => {
+    if (!settings?.googleFormUrl) return;
     
     let responseUrl = settings.googleFormUrl.trim();
     try {
@@ -124,36 +124,49 @@ export default function App() {
       }
     }
 
-    const formData = new URLSearchParams();
     const mappings = settings.entryMappings;
     
-    // Exact mapping matches Google Form parameter names
-    if (mappings.guestName) formData.append(mappings.guestName, rsvp.guestName);
-    if (mappings.phoneOrEmail) formData.append(mappings.phoneOrEmail, rsvp.phoneOrEmail);
-    if (mappings.guestCount) formData.append(mappings.guestCount, String(rsvp.guestCount));
+    // Create dynamically a temporary form targeting the hidden iframe
+    const tempForm = document.createElement('form');
+    tempForm.method = 'POST';
+    tempForm.action = responseUrl;
+    tempForm.target = 'google_form_submit_iframe';
+    tempForm.style.display = 'none';
+
+    const appendField = (name: string, value: string) => {
+      if (!name) return;
+      const input = document.createElement('input');
+      input.type = 'hidden';
+      input.name = name;
+      input.value = value;
+      tempForm.appendChild(input);
+    };
+
+    if (mappings.guestName) appendField(mappings.guestName, rsvp.guestName);
+    if (mappings.phoneOrEmail) appendField(mappings.phoneOrEmail, rsvp.phoneOrEmail);
+    if (mappings.guestCount) appendField(mappings.guestCount, String(rsvp.guestCount));
     
-    // Map Declined to the actual option value "Cannot Attend" defined in the form list fields
     if (mappings.attendance) {
       const formAttendance = rsvp.attendance === 'Declined' ? 'Cannot Attend' : 'Attending';
-      formData.append(mappings.attendance, formAttendance);
+      appendField(mappings.attendance, formAttendance);
     }
     
-    if (mappings.mealPreference) formData.append(mappings.mealPreference, rsvp.mealPreference);
-    if (mappings.blessing) formData.append(mappings.blessing, rsvp.blessing);
+    if (mappings.mealPreference) appendField(mappings.mealPreference, rsvp.mealPreference);
+    if (mappings.blessing) appendField(mappings.blessing, rsvp.blessing);
 
+    document.body.appendChild(tempForm);
     try {
-      await fetch(responseUrl, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: formData,
-      });
-      return { success: true, message: 'Success' };
-    } catch (err: any) {
-      console.error('Error in background sync:', err);
-      return { success: false, message: err.message || 'Network error' };
+      tempForm.submit();
+      console.log('Programmatic form response submitted to hidden iframe successfully.');
+    } catch (err) {
+      console.error('Error submitting form to hidden iframe:', err);
+    } finally {
+      // Remove the form after a short delay
+      setTimeout(() => {
+        if (tempForm.parentNode) {
+          tempForm.parentNode.removeChild(tempForm);
+        }
+      }, 1000);
     }
   };
 
@@ -958,6 +971,8 @@ export default function App() {
 
         </div>
       </footer>
+      {/* Hidden iframe for reliable background cross-origin form post submission */}
+      <iframe name="google_form_submit_iframe" id="google_form_submit_iframe" style={{ display: 'none' }} />
     </div>
   );
 }
