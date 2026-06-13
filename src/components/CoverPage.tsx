@@ -33,7 +33,6 @@ export const CoverPage: React.FC<CoverPageProps> = ({ onNext }) => {
 
   return (
     <div 
-      onClick={onNext}
       className="absolute inset-0 select-none overflow-hidden h-full flex flex-col justify-between p-6 xs:p-8 sm:p-10 rounded-r-lg bg-[#faf9f6] paper-texture paper-fiber cursor-pointer"
       style={{
         boxShadow: 'inset 0 0 45px rgba(140, 126, 109, 0.08), inset 12px 0 15px rgba(255, 255, 255, 0.95), inset -12px 0 15px rgba(0, 0, 0, 0.04), 4px 0 15px rgba(0, 0, 0, 0.12)',

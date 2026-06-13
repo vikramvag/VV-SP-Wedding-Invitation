@@ -263,12 +263,16 @@ export default function App() {
     // Only handle mouse events via pointers to prevent conflict with touch events
     if (e.pointerType === 'touch') return;
     const target = e.target as HTMLElement;
-    // Don't intercept gestures on interactive elements
+    // Don't intercept gestures on interactive elements, close buttons, links, photo select cards or fixed lightbox modals
     if (
       target.closest('button') || 
       target.closest('input') || 
       target.closest('select') || 
-      target.closest('textarea')
+      target.closest('textarea') ||
+      target.closest('a') ||
+      target.closest('.group\\/polaroid') || // Polaroid card grouping
+      target.closest('.group') || // Generic child triggers
+      target.closest('.fixed') // Gallery lightbox overlays
     ) {
       return;
     }
@@ -285,18 +289,39 @@ export default function App() {
       handleNext();
     } else if (diff < -swipeThreshold) {
       handlePrev();
+    } else {
+      // It's a click / tap (very small movement)
+      if (Math.abs(diff) < 12) {
+        const rect = e.currentTarget.getBoundingClientRect();
+        const relativeX = e.clientX - rect.left;
+        const width = rect.width;
+        
+        // Tap on cover page (page 0) always opens/goes next.
+        // For other pages, left half goes back, right half goes next.
+        if (currentPage === 0) {
+          handleNext();
+        } else if (relativeX < width / 2) {
+          handlePrev();
+        } else {
+          handleNext();
+        }
+      }
     }
     pointerStartRef.current = null;
   };
 
   const handleTouchStart = (e: React.TouchEvent) => {
     const target = e.target as HTMLElement;
-    // Don't intercept gestures on interactive elements
+    // Don't intercept gestures on interactive elements, close buttons, links, photo select cards or fixed lightbox modals
     if (
       target.closest('button') || 
       target.closest('input') || 
       target.closest('select') || 
-      target.closest('textarea')
+      target.closest('textarea') ||
+      target.closest('a') ||
+      target.closest('.group\\/polaroid') ||
+      target.closest('.group') ||
+      target.closest('.fixed')
     ) {
       return;
     }
@@ -311,7 +336,7 @@ export default function App() {
     touchEndRef.current = { x: touch.clientX, y: touch.clientY };
   };
 
-  const handleTouchEnd = () => {
+  const handleTouchEnd = (e: React.TouchEvent) => {
     if (!touchStartRef.current || !touchEndRef.current) return;
     const diffX = touchStartRef.current.x - touchEndRef.current.x;
     const diffY = touchStartRef.current.y - touchEndRef.current.y;
@@ -323,6 +348,23 @@ export default function App() {
         handleNext();
       } else {
         handlePrev();
+      }
+    } else {
+      // It's a tap
+      const dist = Math.sqrt(diffX * diffX + diffY * diffY);
+      // Small touch movement constitutes a tap
+      if (dist < 12) {
+        const rect = e.currentTarget.getBoundingClientRect();
+        const relativeX = touchEndRef.current.x - rect.left;
+        const width = rect.width;
+        
+        if (currentPage === 0) {
+          handleNext();
+        } else if (relativeX < width / 2) {
+          handlePrev();
+        } else {
+          handleNext();
+        }
       }
     }
     touchStartRef.current = null;
