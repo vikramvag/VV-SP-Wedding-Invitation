@@ -147,7 +147,7 @@ export const CoverPage: React.FC<CoverPageProps> = ({ onNext }) => {
           <p 
             className="font-serif-lux text-[10px] xs:text-xs italic mt-0.5 font-bold text-[#8c7e6d]"
           >
-            1069, McBride Avenue, Mississauga
+            1096 McBride Avenue, Mississauga - L5C 1M5
           </p>
         </div>
 
