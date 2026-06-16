@@ -11,20 +11,20 @@ export const ITINERARY: DayPlan[] = [
         time: "10:00 AM",
         title: "Ganesh Pooja & Haldi Ceremony",
         description: "A joyous pre-wedding ritual that symbolizes spiritual purification, protection from negative energies, and the blessing of prosperity before they begin their new married life",
-        location: "1096 McBride Avenue, Mississauga - L5C 1M5"
+        location: "1096 McBride Ave, Mississauga - L5C 1M5"
       },
       {
         id: "d1-lunch",
         time: "12:00 PM",
         title: "Lunch",
-        location: "1096 McBride Avenue, Mississauga - L5C 1M5"
+        location: "1096 McBride Ave, Mississauga - L5C 1M5"
       },
       {
         id: "d1-2",
         time: "01:00 PM",
         title: "Mehendi & Shagun",
         description: "A sacred pre-wedding ritual symbolizing prosperity, good fortune, strengthening of marital bonds & lifelong devotion between the couple",
-        location: "1096 McBride Avenue, Mississauga - L5C 1M5"
+        location: "1096 McBride Ave, Mississauga - L5C 1M5"
       }
     ]
   },
@@ -38,20 +38,20 @@ export const ITINERARY: DayPlan[] = [
         time: "04:00 PM",
         title: "Wedding Ceremony",
         description: "Witness the joyful union of Sweta & Vikram as they exchange garlands and complete the sacred Saptapadi. Surrounded by family to witness their first steps as husband and wife.",
-        location: "1096 McBride Avenue, Mississauga - L5C 1M5"
+        location: "1096 McBride Ave, Mississauga - L5C 1M5"
       },
       {
         id: "d2-2",
         time: "05:30 PM",
         title: "Fun and Games",
         description: "Let the friendly rivalry begin! Join us for a lively afternoon of traditional wedding games, laughter, and lighthearted competition as family & friends battle it out for bragging rights.",
-        location: "1096 McBride Avenue, Mississauga - L5C 1M5"
+        location: "1096 McBride Ave, Mississauga - L5C 1M5"
       },
       {
         id: "d2-dinner",
         time: "07:30 PM",
         title: "Dinner",
-        location: "1096 McBride Avenue, Mississauga - L5C 1M5"
+        location: "1096 McBride Ave, Mississauga - L5C 1M5"
       }
     ]
   }

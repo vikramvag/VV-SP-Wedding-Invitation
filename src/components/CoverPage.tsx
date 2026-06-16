@@ -152,7 +152,7 @@ export const CoverPage: React.FC<CoverPageProps> = ({ onNext }) => {
             className="font-serif-lux text-[10px] xs:text-xs italic mt-1 font-bold text-[#8c7e6d] hover:text-[#b38728] transition-colors flex items-center justify-center gap-1 hover:underline cursor-pointer select-text"
           >
             <MapPin className="w-3 h-3 text-[#c5a043]" />
-            1096 McBride Avenue, Mississauga - L5C 1M5
+            1096 McBride Ave, Mississauga - L5C 1M5
           </a>
         </div>
 
