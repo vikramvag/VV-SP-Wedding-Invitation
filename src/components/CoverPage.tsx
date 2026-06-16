@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { GoldCorner, GoldGanesha, GoldDivider } from './GoldOrnaments';
+import { WeddingCountdown } from './WeddingCountdown';
 
 interface CoverPageProps {
   onNext: () => void;
@@ -149,6 +150,8 @@ export const CoverPage: React.FC<CoverPageProps> = ({ onNext }) => {
             1069, McBride Avenue, Mississauga
           </p>
         </div>
+
+        <WeddingCountdown />
 
         <div className="mt-4 flex flex-col items-center gap-1 opacity-70 animate-pulse">
           <p className="text-[#8c7e6d] font-bold text-[9px] uppercase tracking-[0.25em]">

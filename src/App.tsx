@@ -88,13 +88,15 @@ export default function App() {
   // RSVP Deadline: June 21, 2026 at 12:00 PM EST (EDT is UTC-4 in June)
   const RSVP_DEADLINE = React.useMemo(() => new Date('2026-06-21T12:00:00-04:00'), []);
   const [isRSVPClosedGlobally, setIsRSVPClosedGlobally] = useState<boolean>(() => {
-    return Date.now() >= RSVP_DEADLINE.getTime();
+    const hasClosedParam = typeof window !== 'undefined' && new URLSearchParams(window.location.search).has('closed');
+    return hasClosedParam || Date.now() >= RSVP_DEADLINE.getTime();
   });
 
   // Periodically update the real-time closed status
   useEffect(() => {
     const checkTimer = setInterval(() => {
-      setIsRSVPClosedGlobally(Date.now() >= RSVP_DEADLINE.getTime());
+      const hasClosedParam = typeof window !== 'undefined' && new URLSearchParams(window.location.search).has('closed');
+      setIsRSVPClosedGlobally(hasClosedParam || Date.now() >= RSVP_DEADLINE.getTime());
     }, 10000); // check every 10 seconds
     return () => clearInterval(checkTimer);
   }, [RSVP_DEADLINE]);
