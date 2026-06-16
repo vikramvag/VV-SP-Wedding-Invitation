@@ -689,7 +689,9 @@ export default function App() {
                               </div>
                               
                               <h4 className="font-serif-lux font-bold text-xs sm:text-sm text-[#4a443a] mt-1.5">{event.title}</h4>
-                              <p className="text-[10px] leading-relaxed text-[#4a443a]/80 mt-1">{event.description}</p>
+                              {event.description && (
+                                <p className="text-[10px] leading-relaxed text-[#4a443a]/80 mt-1">{event.description}</p>
+                              )}
                               
                               {event.dressCode && (
                                 <div className="mt-2 pt-1.5 border-t border-[#faf9f6]/95 flex items-center gap-1.5">
@@ -757,7 +759,9 @@ export default function App() {
                                   {event.title}
                                   {isMainEvent && <Sparkles className="w-3.5 h-3.5 text-[#e2c175] animate-pulse" />}
                                 </h4>
-                                <p className="text-[10px] leading-relaxed text-[#4a443a]/80 mt-1">{event.description}</p>
+                                {event.description && (
+                                  <p className="text-[10px] leading-relaxed text-[#4a443a]/80 mt-1">{event.description}</p>
+                                )}
                                 
                                 {event.dressCode && (
                                   <div className="mt-2 pt-1.5 border-t border-[#faf9f6] flex items-center gap-1.5">

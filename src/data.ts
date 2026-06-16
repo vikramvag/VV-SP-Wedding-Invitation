@@ -14,6 +14,12 @@ export const ITINERARY: DayPlan[] = [
         location: "1069, McBride Avenue, Mississauga"
       },
       {
+        id: "d1-lunch",
+        time: "12:00 PM",
+        title: "Lunch",
+        location: "1069, McBride Avenue, Mississauga"
+      },
+      {
         id: "d1-2",
         time: "01:00 PM",
         title: "Mehendi & Shagun",
@@ -39,6 +45,12 @@ export const ITINERARY: DayPlan[] = [
         time: "05:30 PM",
         title: "Fun and Games",
         description: "Let the friendly rivalry begin! Join us for a lively afternoon of traditional wedding games, laughter, and lighthearted competition as family & friends battle it out for bragging rights.",
+        location: "1069, McBride Avenue, Mississauga"
+      },
+      {
+        id: "d2-dinner",
+        time: "07:30 PM",
+        title: "Dinner",
         location: "1069, McBride Avenue, Mississauga"
       }
     ]

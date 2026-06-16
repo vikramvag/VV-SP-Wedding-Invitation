@@ -6,7 +6,7 @@ export interface EventItem {
   id: string;
   time: string;
   title: string;
-  description: string;
+  description?: string;
   dressCode?: string;
   location: string;
 }
