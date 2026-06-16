@@ -682,10 +682,15 @@ export default function App() {
                                 <span className="inline-block px-1.5 py-0.5 bg-[#4a443a] text-[#faf9f6] text-[8px] font-mono tracking-wider font-semibold rounded-[2px] shrink-0">
                                   {event.time}
                                 </span>
-                                <span className="text-[9px] text-[#8c7e6d] font-semibold flex items-center gap-1 max-w-[65%] truncate font-sans-lux">
+                                <a 
+                                  href="https://maps.app.goo.gl/QVCmCQ7nfb21QkZb6"
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="text-[9px] text-[#8c7e6d] hover:text-[#b38728] transition-colors font-semibold flex items-center gap-1 max-w-[65%] truncate font-sans-lux hover:underline cursor-pointer"
+                                >
                                   <MapPin className="w-2.5 h-2.5 shrink-0" />
                                   <span className="truncate">{event.location}</span>
-                                </span>
+                                </a>
                               </div>
                               
                               <h4 className="font-serif-lux font-bold text-xs sm:text-sm text-[#4a443a] mt-1.5">{event.title}</h4>
@@ -749,10 +754,15 @@ export default function App() {
                                       </span>
                                     )}
                                   </div>
-                                  <span className="text-[9px] text-[#8c7e6d] font-semibold flex items-center gap-1 max-w-[65%] truncate">
+                                  <a 
+                                    href="https://maps.app.goo.gl/QVCmCQ7nfb21QkZb6"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-[9px] text-[#8c7e6d] hover:text-[#b38728] transition-colors font-semibold flex items-center gap-1 max-w-[65%] truncate hover:underline cursor-pointer"
+                                  >
                                     <MapPin className="w-2.5 h-2.5 shrink-0" />
                                     <span className="truncate">{event.location}</span>
-                                  </span>
+                                  </a>
                                 </div>
                                 
                                 <h4 className={`font-serif-lux font-bold text-[#4a443a] mt-1.5 flex items-center gap-1.5 ${isMainEvent ? 'text-sm sm:text-base text-[#4a443a] font-semibold' : 'text-xs sm:text-sm'}`}>

@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'motion/react';
+import { MapPin } from 'lucide-react';
 import { GoldCorner, GoldGanesha, GoldDivider } from './GoldOrnaments';
 import { WeddingCountdown } from './WeddingCountdown';
 
@@ -144,11 +145,15 @@ export const CoverPage: React.FC<CoverPageProps> = ({ onNext }) => {
           >
             August 9, 2026
           </h2>
-          <p 
-            className="font-serif-lux text-[10px] xs:text-xs italic mt-0.5 font-bold text-[#8c7e6d]"
+          <a 
+            href="https://maps.app.goo.gl/QVCmCQ7nfb21QkZb6"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-serif-lux text-[10px] xs:text-xs italic mt-1 font-bold text-[#8c7e6d] hover:text-[#b38728] transition-colors flex items-center justify-center gap-1 hover:underline cursor-pointer select-text"
           >
+            <MapPin className="w-3 h-3 text-[#c5a043]" />
             1096 McBride Avenue, Mississauga - L5C 1M5
-          </p>
+          </a>
         </div>
 
         <WeddingCountdown />
